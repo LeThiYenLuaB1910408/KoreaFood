@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "NV1",
+    "cccd": "012345678910",
+    "ho_ten": "Lê Thị Yến Lụa",
+    "so_dien_thoai": "0123456789",
+    "dia_chi": "Ninh Kiều, Cần Thơ",
+    "ngay_sinh": "09-07-2001",
+    "gioi_tinh": "Nữ",
+    "hinh_anh_tai_khoan": "user/NV01.jpg",
+    "tai_khoan": {
+      "ten_dang_nhap": "lua@qtv",
+      "mat_khau": "lua@qtv",
+      "cap_quyen": "1",
+      "ngay_bat_dau_lam_viec": "01-01-2019"
+    }
+  },
+  {
+    "_id": "NV2",
+    "cccd": "012345678910",
+    "ho_ten": "Trạng Cùi",
+    "so_dien_thoai": "0123456789",
+    "dia_chi": "Ninh Kiều, Cần Thơ",
+    "ngay_sinh": "12-04-2001",
+    "gioi_tinh": "Nữ",
+    "hinh_anh_tai_khoan": "user/NV01.jpg",
+    "tai_khoan": {
+      "ten_dang_nhap": "@trang789",
+      "mat_khau": "@trang789",
+      "cap_quyen": "0",
+      "ngay_bat_dau_lam_viec": "01-05-2019"
+    }
+  }
+
+]

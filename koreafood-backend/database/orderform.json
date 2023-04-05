@@ -1,0 +1,18 @@
+[{
+    "_id": "DH1",
+    "thoi_gian":"5-3-2023 12:55", 
+    "danh_sach_mon_an":[
+        {
+            "ten_mon_an": "Mỳ Cay Kim Chi Thập Cẩm",
+            "chu_thich": "Cấp độ 2",
+            "so_luong": 1,
+            "gia_ban": 45000,
+            "trang_thai_mon_an": "Đang chuẩn bị"
+        }
+    ],
+    "tong_so_luong": 1,
+    "tong_tien": 45000,
+    "trang_thai_don": "Đang đợi món",
+    "ma_nhan_vien_lap_don": "NV01",
+    "so_ban": 1
+}] 

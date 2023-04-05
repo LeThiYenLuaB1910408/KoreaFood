@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "NV01",
+    "cccd": "012345678910",
+    "ho_ten": "Lê Thị Yến Lụa",
+    "so_dien_thoai": "0123456789",
+    "dia_chi": "Ninh Kiều, Cần Thơ",
+    "ngay_sinh": "09-07-2001",
+    "hinh_anh_tai_khoan": "user/NV01.jpg",
+    "tai_khoan": {
+      "ten_dang_nhap": "lua@qtv",
+      "mat_khau": "lua@qtv",
+      "cap_quyen": "1"
+    }
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "DH1",
+    "thoi_gian": "5-3-2023 12:55",
+    "ma_nhan_vien_lap_don": "NV01",
+    "danh_sach_mon_an": [
+      {
+        "ten_mon_an": "Mỳ Cay Kim Chi Thập Cẩm",
+        "so_luong": 1,
+        "gia_ban": 45000
+      }
+    ],
+    "tong_so_luong": 1,
+    "khuyen_mai_ap_dung": null,
+    "tong_tien": 45000,
+    "so_ban": 1
+  }
+]

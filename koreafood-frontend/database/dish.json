@@ -1,0 +1,298 @@
+[
+  {
+    "_id": "M01",
+    "ten_mon_an": "Bánh Gạo Lắc Phô Mai",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "hinh_anh_mon_an": "Do_An/banh-gao-lac-pho-mai.jpg",
+    "so_luong_ban_ra": 0
+  },
+  {
+    "_id": "M02",
+    "ten_mon_an": "Bánh Gạo Sốt Phô Mai",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/banh-gao-sot-pho-mai.jpg"
+  },
+  {
+    "_id": "M03",
+    "ten_mon_an": "Canh Rong Biển",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 35000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/canh-rong-bien.jpg"
+  },
+  {
+    "_id": "M04",
+    "ten_mon_an": "Cơm Trộn",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/com-tron.jpg"
+  },
+  {
+    "_id": "M05",
+    "ten_mon_an": "Gà Sốt Cay",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/ga-cay.jpg"
+  },
+  {
+    "_id": "M06",
+    "ten_mon_an": "Gà Cay Phô Mai",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 45000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/ga-cay-pho-mai.jpg"
+  },
+  {
+    "_id": "M07",
+    "ten_mon_an": "Cơm Cuộn Hàn Quốc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/kimbap.jpg"
+  },
+  {
+    "_id": "M08",
+    "ten_mon_an": "Cơm Cuộn Chiên Giòn",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/kimbap-chien-gion.jpg"
+  },
+  {
+    "_id": "M09",
+    "ten_mon_an": "Lẩu Bò Bulgogi Hàn Quốc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 250000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/lau-bulgogi.jpg"
+  },
+  {
+    "_id": "M10",
+    "ten_mon_an": "Lẩu Chả Cá Hàn Quốc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 200000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/lau-cha-ca.jpg"
+  },
+  {
+    "_id": "M11",
+    "ten_mon_an": "Lẩu Tokbokki Hàn Quốc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 200000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/lau-tokbokki.jpg"
+  },
+  {
+    "_id": "M12",
+    "ten_mon_an": "Mỳ Cay Bạch Tuộc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 42000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/mi-bach-tuoc.jpg"
+  },
+  {
+    "_id": "M13",
+    "ten_mon_an": "Mỳ Cay Bò",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 42000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/mi-bo.jpg"
+  },
+  {
+    "_id": "M14",
+    "ten_mon_an": "Mỳ Cay Thập Cẩm",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 45000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/mi-thap-cam.jpg"
+  },
+  {
+    "_id": "M15",
+    "ten_mon_an": "Mì Trộn Hàn Quốc",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/mi-tron.jpg"
+  },
+  {
+    "_id": "M16",
+    "ten_mon_an": "Mỳ Cay Xúc Xích",
+    "id_loai_mon_an": "L01",
+    "gia_mon_an": 40000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/mi-xuc-xich.jpg"
+  },
+  {
+    "_id": "M17",
+    "ten_mon_an": "Bánh Gạo",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/banh-gao.jpg"
+  },
+  {
+    "_id": "M18",
+    "ten_mon_an": "Ba Rọi Bò",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 35000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/ba-roi-bo.jpg"
+  },
+  {
+    "_id": "M19",
+    "ten_mon_an": "Bò Cuộn Nấm Kim Châm",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 35000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/bo-cuon-nam.jpg"
+  },
+  {
+    "_id": "M20",
+    "ten_mon_an": "Chả Cá Hàn Quốc",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 35000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/cha-ca.jpg"
+  },
+  {
+    "_id": "M21",
+    "ten_mon_an": "Kimchi hàn Quốc",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 20000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/kimchi.jpg"
+  },
+  {
+    "_id": "M22",
+    "ten_mon_an": "Mì Gói Hàn Quốc",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 10000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/mi-han-quoc.webp"
+  },
+  {
+    "_id": "M23",
+    "ten_mon_an": "Mì Gói Việt Nam",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 5000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/mi-viet-nam.jpg"
+  },
+  {
+    "_id": "M24",
+    "ten_mon_an": "Nấm Thập Cẩm",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 20000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/nam.jpg"
+  },
+  {
+    "_id": "M25",
+    "ten_mon_an": "Xúc Xích",
+    "id_loai_mon_an": "L03",
+    "gia_mon_an": 15000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_An/Mon_Them/xuc-xich.jpg"
+  },
+  {
+    "_id": "M26",
+    "ten_mon_an": "7 UP",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 15000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/7-up.jpg"
+  },
+  {
+    "_id": "M27",
+    "ten_mon_an": "Bia OB",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/bia-ob.jpg"
+  },
+  {
+    "_id": "M28",
+    "ten_mon_an": "Nước Suối Lavie",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 10000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/nuoc-suoi-lavie.png"
+  },
+  {
+    "_id": "M29",
+    "ten_mon_an": "Pepsi",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 15000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/pepsi.jpg"
+  },
+  {
+    "_id": "M30",
+    "ten_mon_an": "Rượu Soju",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 55000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/ruou-soju.jpg"
+  },
+  {
+    "_id": "M31",
+    "ten_mon_an": "Soda Bạc Hà",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/soda-bac-ha.jpg"
+  },
+  {
+    "_id": "M32",
+    "ten_mon_an": "Soda Dâu",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/soda-dau.jpg"
+  },
+  {
+    "_id": "M33",
+    "ten_mon_an": "Soda Deep Blue",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/soda-deep-blue.jpg"
+  },
+  {
+    "_id": "M34",
+    "ten_mon_an": "Soda Việt Quất",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/soda-viet-quat.jpg"
+  },
+  {
+    "_id": "M35",
+    "ten_mon_an": "Sting Đỏ",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 15000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/sting.jpg"
+  },
+  {
+    "_id": "M36",
+    "ten_mon_an": "Trà Đào",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/tra-dao.jpg"
+  },
+  {
+    "_id": "M37",
+    "ten_mon_an": "Trà Sữa Trân Châu Đường Đen",
+    "id_loai_mon_an": "L02",
+    "gia_mon_an": 25000,
+    "so_luong_ban_ra": 0,
+    "hinh_anh_mon_an": "Do_Uong/tra-sua.jpg"
+  }
+]
