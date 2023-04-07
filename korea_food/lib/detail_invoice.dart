@@ -1,15 +1,19 @@
 import 'dart:core';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:korea_food/const.dart';
 import 'package:korea_food/homepage.dart';
+import 'package:korea_food/models/bill_model.dart';
+import 'package:korea_food/models/managers/order_manager.dart';
+import 'package:korea_food/models/managers/user_manager.dart';
+import 'package:korea_food/models/user_model.dart';
 import 'package:korea_food/user.dart';
-
-import 'dialog.dart';
+import 'package:provider/provider.dart';
 
 class DetailInvoicePage extends StatefulWidget {
-  const DetailInvoicePage({Key? key}) : super(key: key);
+  final Bill bill;
+
+  DetailInvoicePage({Key? key, required this.bill}) : super(key: key);
 
   @override
   State<DetailInvoicePage> createState() => _DetailInvoicePageState();
@@ -20,14 +24,16 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
 
   @override
   Widget build(BuildContext context) {
+    User user = context.read<UserManager>().user;
+
     return SafeArea(
       child: Scaffold(
         body: Container(
           child: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10, bottom: 10, left: 5),
-                decoration: BoxDecoration(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 5),
+                decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 225, 207, 41),
                     boxShadow: [
                       BoxShadow(
@@ -41,14 +47,14 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.of(context).pop();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back,
                           color: Colors.white,
                           size: 25,
                         )),
-                    Expanded(
+                    const Expanded(
                       child: Center(
                         child: Text(
                           'KoreaFood',
@@ -61,8 +67,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(boxShadow: [
+                      margin: const EdgeInsets.only(right: 10),
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(boxShadow: const [
                         BoxShadow(
                             color: Colors.black,
                             blurRadius: 5,
@@ -73,16 +81,17 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => UserPage()));
+                                  builder: (context) => const UserPage()));
                         },
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          child: const Text(
-                            'YL',
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(25),
+                          child: Image.asset(
+                            'assets/images/${user.hinh_anh_tai_khoan}',
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -153,11 +162,11 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            'Số HĐ: 001',
+                            'Số HĐ: ${widget.bill.id}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                           Text(
-                            'Bàn: Số 1',
+                            'Bàn: ${widget.bill.so_ban}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                         ],
@@ -175,13 +184,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 width: 10,
                               ),
                               Text(
-                                '${DateFormat.yMd().add_jm().format(DateTime.now())}',
+                                '${widget.bill.thoi_gian}',
                                 style: poppins.copyWith(fontSize: 13),
                               ),
                             ],
                           ),
                           Text(
-                            'Nhân viên: Yến Lụa',
+                            'Nhân viên: ${user.ho_ten}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                         ],
@@ -194,7 +203,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                           Row(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .3,
+                                width: MediaQuery.of(context).size.width * .4,
                                 child: Center(
                                   child: Text(
                                     'Tên Món',
@@ -205,7 +214,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .2,
+                                width: MediaQuery.of(context).size.width * .15,
                                 child: Center(
                                   child: Text(
                                     'Số lượng',
@@ -216,7 +225,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .25,
+                                width: MediaQuery.of(context).size.width * .2,
                                 child: Center(
                                   child: Text(
                                     'Giá',
@@ -243,18 +252,20 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                             height: 10,
                           ),
                           Container(
-                            constraints: BoxConstraints(maxHeight: 180),
+                            height: widget.bill.danh_sach_mon_an.length * 35,
                             child: ListView.builder(
-                              itemCount: 5,
+                              itemCount: widget.bill.danh_sach_mon_an.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     BillItem(
                                       context,
-                                      'KimBap',
-                                      2,
-                                      45000,
+                                      '${widget.bill.danh_sach_mon_an[index].ten_mon_an}',
+                                      widget.bill.danh_sach_mon_an[index]
+                                          .so_luong_dat!,
+                                      widget.bill.danh_sach_mon_an[index]
+                                          .gia_mon_an,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -271,7 +282,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                           Row(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .3,
+                                width: MediaQuery.of(context).size.width * .4,
                                 child: Center(
                                   child: Text(
                                     'TỔNG CỘNG',
@@ -282,10 +293,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .2,
+                                width: MediaQuery.of(context).size.width * .15,
                                 child: Center(
                                   child: Text(
-                                    '10',
+                                    widget.bill.tong_so_luong.toString(),
                                     style: poppins.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -293,13 +304,13 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .25,
+                                width: MediaQuery.of(context).size.width * .2,
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .25,
                                 child: Center(
                                   child: Text(
-                                    '450.000đ',
+                                    '${oCcy.format(context.read<OrderManager>().total(widget.bill.danh_sach_mon_an))}đ',
                                     style: poppins.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -314,10 +325,10 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                           Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.only(left: 12),
+                                padding: EdgeInsets.only(left: 42),
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: Text(
-                                  'GIẢM GIÁ HÓA ĐƠN',
+                                  'GIẢM GIÁ',
                                   style: poppins.copyWith(
                                     fontSize: 14,
                                   ),
@@ -330,7 +341,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                                 width: MediaQuery.of(context).size.width * .25,
                                 child: Center(
                                   child: Text(
-                                    '0đ',
+                                    '${oCcy.format(context.read<OrderManager>().total(widget.bill.danh_sach_mon_an) * widget.bill.gia_tri_giam_gia / 100)}đ',
                                     style: poppins.copyWith(
                                       fontSize: 14,
                                     ),
@@ -342,23 +353,31 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 15,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
                             'TỔNG TIỀN THANH TOÁN',
                             style: poppins.copyWith(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '450.000đ',
+                            '${oCcy.format(widget.bill.tong_tien)}đ',
                             style: poppins.copyWith(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 55,
+                      ),
+                      Text(
+                        'CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!!!',
+                        style: TextStyle(
+                            fontFamily: 'Dancing Script', fontSize: 25),
+                      )
                     ],
                   ),
                 ),
@@ -379,7 +398,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
     return Row(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * .3,
+          width: MediaQuery.of(context).size.width * .4,
           child: Center(
             child: Row(
               children: [
@@ -395,7 +414,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * .2,
+          width: MediaQuery.of(context).size.width * .15,
           child: Center(
             child: Text(
               '$number',
@@ -406,7 +425,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * .25,
+          width: MediaQuery.of(context).size.width * .2,
           child: Center(
             child: Text(
               '${oCcy.format(price)}đ',

@@ -1,5 +1,5 @@
 class TableModel {
-  final String trang_thai_ban_an;
+  late final String trang_thai_ban_an;
   final int so_cho_ngoi;
   String? id;
 

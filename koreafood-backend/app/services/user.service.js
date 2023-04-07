@@ -29,7 +29,6 @@ class UserService {
         return await result.toArray();
     }
     async getUser(id) {
-        console.log(id);
         const result = await this.User.findOne({ _id: id });
         return result;
     };
@@ -68,7 +67,6 @@ class UserService {
         return result.ok;
     }
     async update(id, payload) {
-        console.log(id, payload);
         const result = await this.User.findOneAndUpdate(
             { _id: id },
             {
@@ -78,7 +76,6 @@ class UserService {
         return result.ok;
     }
     async updateAvar(file, id) {
-        console.log(id);
         const fs = require('fs');
         let folderPath = "D:\\LVTN\\koreafood-frontend\\src\\assets\\images";
         let folderPathMobile = "D:\\LVTN\\korea_food\\assets\\images";

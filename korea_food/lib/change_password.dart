@@ -44,23 +44,14 @@ class _ChangePasswordState extends State<ChangePassword> {
 
       print(result);
       if (result['message'] == "Mật Khẩu Không Đúng!!!") {
-        showMessageDialog(
-            context, result['message']);
+        showMessageDialog(context, result['message']);
       } else {
         showSuccessDialog(
-            context,
-            result['message'],
-            );
+          context,
+          result['message'],
+        );
       }
 
-      // if (result['message'] == null) {
-      //   Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (context) => const HomePage()),
-      //     (Route<dynamic> route) => false,
-      //   );
-      // } else {
-      //   showErrorDialog(context, 'Tên Đăng Nhập Hoặc Mật Khẩu Không Đúng');
-      // }
       print(result);
     } catch (error) {
       showErrorDialog(
@@ -210,6 +201,42 @@ class _ChangePasswordState extends State<ChangePassword> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UserPage()),
+                                                (route) => false);
+                                      },
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .3,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red[900],
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        padding: EdgeInsets.all(15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.arrow_back,
+                                              color: Colors.white,
+                                            ),
+                                            Text(
+                                              'PREVIOUS',
+                                              style: poppins.copyWith(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                     ValueListenableBuilder<bool>(
                                       valueListenable: _isSubmitting,
                                       builder: (context, isSubmitting, child) {

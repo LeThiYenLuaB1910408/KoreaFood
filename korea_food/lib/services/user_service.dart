@@ -8,22 +8,17 @@ import 'package:path/path.dart' as p;
 class UsersService {
   Future<User?> fetchUser(id) async {
     User? user;
-    print(id);
     try {
       final userUrl = Uri.http(Url, "/api/users/Profile/$id");
 
       final response = await http.get(userUrl);
       final userMap = json.decode(response.body);
-      print(userMap);
       if (response.statusCode != 200) {
         // print(usersMap['error']);
         return user;
       }
 
-      // usersMap.forEach((table) {
       user = User.fromJson(userMap);
-      // });
-      print(user);
       return user;
     } catch (error) {
       print(error);
@@ -31,7 +26,7 @@ class UsersService {
     }
   }
 
-  Future changePassword(String oldPassword,String newPassword,id) async {
+  Future changePassword(String oldPassword, String newPassword, id) async {
     try {
       final url = Uri.http(Url, "/api/users//Profile/Password/$id");
       final response = await http.put(

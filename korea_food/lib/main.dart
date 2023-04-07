@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:korea_food/invoice_history.dart';
+import 'package:korea_food/models/managers/bill_manager.dart';
+import 'package:korea_food/models/managers/discount_manager.dart';
+import 'package:korea_food/models/managers/order_manager.dart';
 import 'package:korea_food/models/managers/product_manager.dart';
 import 'package:korea_food/models/managers/table_manager.dart';
 import 'package:korea_food/models/managers/user_manager.dart';
@@ -38,18 +42,21 @@ class MyApp extends StatelessWidget {
             return ProductManager();
           },
         ),
-        //   update: (ctx, authManager, petsManager) {
-        //     petsManager!.authToken = authManager.authToken;
-        //     return petsManager;
-        //   },
-        // ),
-        // ChangeNotifierProxyProvider<AuthManager, OwnerManager>(
-        //   create: (ctx) => OwnerManager(),
-        //   update: (ctx, authManager, ownersManager) {
-        //     ownersManager!.authToken = authManager.authToken;
-        //     return ownersManager;
-        //   },
-        // ),
+        ChangeNotifierProvider<OrderManager>(
+          create: (ctx) {
+            return OrderManager();
+          },
+        ),
+        ChangeNotifierProvider<DiscountManager>(
+          create: (ctx) {
+            return DiscountManager();
+          },
+        ),
+        ChangeNotifierProvider<BillsManager>(
+          create: (ctx) {
+            return BillsManager();
+          },
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

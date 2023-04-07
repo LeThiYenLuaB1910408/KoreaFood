@@ -61,9 +61,10 @@ class _UserPageState extends State<UserPage> {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (ctx) => HomePage()),
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                          (Route<dynamic> route) => false,
                         );
                       },
                       icon: Icon(Icons.home, color: Colors.white, size: 28)),
@@ -75,7 +76,7 @@ class _UserPageState extends State<UserPage> {
                       'User',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30,
+                          fontSize: 28,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -329,8 +330,6 @@ class _UserPageState extends State<UserPage> {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Row(
                                   children: [
                                     const Icon(
@@ -339,12 +338,17 @@ class _UserPageState extends State<UserPage> {
                                       color: Color.fromARGB(255, 225, 207, 41),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text(
-                                      'Edit profile',
-                                      style: poppins.copyWith(
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: Text(
+                                          'Edit profile',
+                                          style: poppins.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
-                                    const Spacer(),
                                     Container(
                                         padding: const EdgeInsets.all(3),
                                         child: const Icon(
@@ -368,8 +372,6 @@ class _UserPageState extends State<UserPage> {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Row(
                                   children: [
                                     const Icon(
@@ -378,12 +380,17 @@ class _UserPageState extends State<UserPage> {
                                       color: Color.fromARGB(255, 225, 207, 41),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text(
-                                      'Invoice History',
-                                      style: poppins.copyWith(
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        child: Text(
+                                          'Invoice History',
+                                          style: poppins.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
-                                    const Spacer(),
                                     Container(
                                         padding: const EdgeInsets.all(3),
                                         child: const Icon(
@@ -407,8 +414,6 @@ class _UserPageState extends State<UserPage> {
                                 );
                               },
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Row(
                                   children: [
                                     const Icon(
@@ -417,12 +422,17 @@ class _UserPageState extends State<UserPage> {
                                       color: Color.fromARGB(255, 225, 207, 41),
                                     ),
                                     const SizedBox(width: 10),
-                                    Text(
-                                      'Change Password',
-                                      style: poppins.copyWith(
-                                          fontWeight: FontWeight.bold),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 15),
+                                        child: Text(
+                                          'Change Password',
+                                          style: poppins.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
-                                    const Spacer(),
                                     Container(
                                         padding: const EdgeInsets.all(3),
                                         child: const Icon(

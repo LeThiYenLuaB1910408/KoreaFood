@@ -31,6 +31,18 @@ exports.addDish = async (req, res, next) => {
         return console.log(`Có Lỗi Trong Lúc Thêm Thực Đơn!!!`);
     }
 };
+exports.updateQuantity = async (req, res, next) => {
+    try {
+        const menuService = new MenuService(MongoDB.client);
+        const document = await menuService.updateQuantity(req.body);
+        if (document == true) {
+            return res.send({ message: `Cập Nhật Món Ăn Thành Công!!!` });
+        }
+        return res.send(document);
+    } catch (error) {
+        return console.log(`Có Lỗi Trong Lúc Cập Nhật Thực Đơn!!!`);
+    }
+};
 exports.update = async (req, res, next) => {
     try {
         const menuService = new MenuService(MongoDB.client);

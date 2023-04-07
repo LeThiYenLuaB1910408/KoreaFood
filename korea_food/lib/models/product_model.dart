@@ -17,6 +17,9 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
+      'so_luong': so_luong_dat,
+      'chu_thich': ghi_chu,
       'hinh_anh_mon_an': hinh_anh_mon_an,
       'ten_mon_an': ten_mon_an,
       'gia_mon_an': gia_mon_an,
@@ -35,8 +38,8 @@ class Product {
       id_loai_mon_an: json['id_loai_mon_an'],
       trang_thai_mon_an: json['trang_thai_mon_an'],
       so_luong_ban_ra: json['so_luong_ban_ra'],
-      so_luong_dat: 0,
-      ghi_chu: '',
+      so_luong_dat: json['so_luong'] ?? 0,
+      ghi_chu: json['chu_thich'] ?? '',
     );
   }
 
@@ -59,8 +62,8 @@ class Product {
       id_loai_mon_an: id_loai_mon_an ?? this.id_loai_mon_an,
       trang_thai_mon_an: trang_thai_mon_an ?? this.trang_thai_mon_an,
       so_luong_ban_ra: so_luong_ban_ra ?? this.so_luong_ban_ra,
-      so_luong_dat: so_luong_dat ?? 0,
-      ghi_chu: ghi_chu ?? '',
+      so_luong_dat: so_luong_dat ?? this.so_luong_dat,
+      ghi_chu: ghi_chu ?? this.ghi_chu,
     );
   }
 }

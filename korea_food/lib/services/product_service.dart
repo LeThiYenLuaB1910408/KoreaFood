@@ -30,23 +30,23 @@ class ProductService {
     }
   }
 
-  // Future<bool> updateTable(Table pet) async {
-  //   try {
-  //     final url = Uri.parse('$databaseUrl/products/${pet.id}.json?auth=$token');
-  //     final response = await http.patch(
-  //       url,
-  //       body: json.encode(pet.toJson()),
-  //     );
+  Future<bool> updateProduct(List<Product> product) async {
+    try {
+      final productsUrl = Uri.http(Url, "/api/menu/QLTD");
+      final response = await http.put(
+        productsUrl,
+        body: json.encode({'danh_sach_mon_an': product}),
+        headers: {"Content-Type": "application/json"},
+      );
 
-  //     if (response.statusCode != 200) {
-  //       throw Exception(json.decode(response.body)['error']);
-  //     }
+      if (response.statusCode != 200) {
+        throw Exception(json.decode(response.body)['error']);
+      }
 
-  //     return true;
-  //   } catch (error) {
-  //     print(error);
-  //     return false;
-  //   }
-  // }
-
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
+  }
 }

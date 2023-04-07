@@ -14,15 +14,10 @@ class TablesManager with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> updateTable(Table table) async {
-  //   final index = _tables.indexWhere((item) => item.id == table.id);
-  //   if (index >= 0) {
-  //     if (await _tablesService.updateTable(table)) {
-  //       _tables[index] = table;
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
+  Future<void> updateTable(String id, String trang_thai_ban_an) async {
+    await _tablesService.updateTable(id, trang_thai_ban_an);
+    notifyListeners();
+  }
 
   List<TableModel> get tables {
     return [..._tables];

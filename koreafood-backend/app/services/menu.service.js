@@ -84,6 +84,23 @@ class MenuService {
         }
         return result.ok;
     }
+    async updateQuantity(payload){
+        console.log(payload);
+        payload.danh_sach_mon_an.forEach(async (e)=> {
+            await this.Menu.findOneAndUpdate(
+                {_id: e._id},
+                {
+                    $set: {
+                        so_luong_ban_ra: e.so_luong_ban_ra + e.so_luong
+                    }
+                },
+                {
+                    returnDocument: "after"
+                }
+            );
+        })
+        return true;
+    }
     async addDish(file, payload) {
         const fs = require('fs');
         let folderPath = "D:\\LVTN\\koreafood-frontend\\src\\assets\\images";

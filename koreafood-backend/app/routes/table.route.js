@@ -7,7 +7,8 @@ router.route("/QLBA")
     .get(table.getTable)
     .post(table.addTable)
 router.route(`/QLBA/:id`)
-    .delete(table.delete);
+    .delete(table.delete)
+    .put(table.update)
 
 
 module.exports = router;

@@ -14,15 +14,10 @@ class ProductManager with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> updateTable(Table table) async {
-  //   final index = _tables.indexWhere((item) => item.id == table.id);
-  //   if (index >= 0) {
-  //     if (await _tablesService.updateTable(table)) {
-  //       _tables[index] = table;
-  //       notifyListeners();
-  //     }
-  //   }
-  // }
+  Future<void> updateProduct(List<Product> product) async {
+    await _productsService.updateProduct(product);
+    notifyListeners();
+  }
 
   List<Product> get products {
     return [..._products];

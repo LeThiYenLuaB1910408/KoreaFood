@@ -108,7 +108,7 @@ export default {
                         <th scope="row">{{ e._id }}</th>
                         <td>{{ e.thoi_gian }}</td>
                         <td>Bàn Số {{ e.so_ban }}</td>
-                        <td>{{ e.ma_nhan_vien_lap_don }}</td>
+                        <td>{{ e.ma_nhan_vien_xuat_don }}</td>
                         <td class="text-danger fw-bold">{{ e.tong_tien }}đ</td>
                     </tr>
                 </tbody>

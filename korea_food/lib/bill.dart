@@ -1,18 +1,27 @@
 import 'dart:core';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:korea_food/const.dart';
 import 'package:korea_food/homepage.dart';
-import 'package:korea_food/user.dart';
-
-import 'dialog.dart';
+import 'package:korea_food/models/product_model.dart';
 
 class BillPage extends StatefulWidget {
-  const BillPage({Key? key}) : super(key: key);
+  List<Product> productsBill;
+  String tennv, so_ban, ma_hoa_don;
+  int? gia_tri_khuyen_mai;
+  int so_luong;
+  num total;
+
+  BillPage(
+      {Key? key,
+      this.gia_tri_khuyen_mai,
+      required this.so_luong,
+      required this.productsBill,
+      required this.so_ban,
+      required this.tennv,
+      required this.total,
+      required this.ma_hoa_don})
+      : super(key: key);
 
   @override
   State<BillPage> createState() => _BillPageState();
@@ -70,10 +79,10 @@ class _BillPageState extends State<BillPage> {
                       margin: EdgeInsets.only(right: 10),
                       child: GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => UserPage()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => UserPage()));
                           },
                           child: Icon(
                             Icons.print_outlined,
@@ -151,11 +160,11 @@ class _BillPageState extends State<BillPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            'Số HĐ: 001',
+                            'Số HĐ: ${widget.ma_hoa_don}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                           Text(
-                            'Bàn: Số 1',
+                            'Bàn: ${widget.so_ban}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                         ],
@@ -179,7 +188,7 @@ class _BillPageState extends State<BillPage> {
                             ],
                           ),
                           Text(
-                            'Nhân viên: Yến Lụa',
+                            'Nhân viên: ${widget.tennv}',
                             style: poppins.copyWith(fontSize: 14),
                           ),
                         ],
@@ -192,7 +201,7 @@ class _BillPageState extends State<BillPage> {
                           Row(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .3,
+                                width: MediaQuery.of(context).size.width * .4,
                                 child: Center(
                                   child: Text(
                                     'Tên Món',
@@ -203,7 +212,7 @@ class _BillPageState extends State<BillPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .2,
+                                width: MediaQuery.of(context).size.width * .15,
                                 child: Center(
                                   child: Text(
                                     'Số lượng',
@@ -214,7 +223,7 @@ class _BillPageState extends State<BillPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .25,
+                                width: MediaQuery.of(context).size.width * .2,
                                 child: Center(
                                   child: Text(
                                     'Giá',
@@ -241,18 +250,18 @@ class _BillPageState extends State<BillPage> {
                             height: 10,
                           ),
                           Container(
-                            constraints: BoxConstraints(maxHeight: 180),
+                            height: widget.productsBill.length * 35,
                             child: ListView.builder(
-                              itemCount: 5,
+                              itemCount: widget.productsBill.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     BillItem(
                                       context,
-                                      'KimBap',
-                                      2,
-                                      45000,
+                                      '${widget.productsBill[index].ten_mon_an}',
+                                      widget.productsBill[index].so_luong_dat!,
+                                      widget.productsBill[index].gia_mon_an,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.symmetric(
@@ -269,7 +278,7 @@ class _BillPageState extends State<BillPage> {
                           Row(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .3,
+                                width: MediaQuery.of(context).size.width * .4,
                                 child: Center(
                                   child: Text(
                                     'TỔNG CỘNG',
@@ -280,10 +289,10 @@ class _BillPageState extends State<BillPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .2,
+                                width: MediaQuery.of(context).size.width * .15,
                                 child: Center(
                                   child: Text(
-                                    '10',
+                                    widget.so_luong.toString(),
                                     style: poppins.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -291,13 +300,13 @@ class _BillPageState extends State<BillPage> {
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * .25,
+                                width: MediaQuery.of(context).size.width * .2,
                               ),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .25,
                                 child: Center(
                                   child: Text(
-                                    '450.000đ',
+                                    '${oCcy.format(widget.total)}đ',
                                     style: poppins.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -312,10 +321,10 @@ class _BillPageState extends State<BillPage> {
                           Row(
                             children: [
                               Container(
-                                padding: EdgeInsets.only(left: 12),
+                                padding: EdgeInsets.only(left: 42),
                                 width: MediaQuery.of(context).size.width * .5,
                                 child: Text(
-                                  'GIẢM GIÁ HÓA ĐƠN',
+                                  'GIẢM GIÁ',
                                   style: poppins.copyWith(
                                     fontSize: 14,
                                   ),
@@ -328,7 +337,7 @@ class _BillPageState extends State<BillPage> {
                                 width: MediaQuery.of(context).size.width * .25,
                                 child: Center(
                                   child: Text(
-                                    '0đ',
+                                    '${oCcy.format(widget.total * widget.gia_tri_khuyen_mai! / 100)}đ',
                                     style: poppins.copyWith(
                                       fontSize: 14,
                                     ),
@@ -340,23 +349,31 @@ class _BillPageState extends State<BillPage> {
                         ],
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 15,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text(
                             'TỔNG TIỀN THANH TOÁN',
                             style: poppins.copyWith(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '450.000đ',
+                            '${oCcy.format(widget.total - widget.total * widget.gia_tri_khuyen_mai! / 100)}đ',
                             style: poppins.copyWith(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
+                      const SizedBox(
+                        height: 55,
+                      ),
+                      Text(
+                        'CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!!!',
+                        style: TextStyle(
+                            fontFamily: 'Dancing Script', fontSize: 25),
+                      )
                     ],
                   ),
                 ),
@@ -377,7 +394,7 @@ class _BillPageState extends State<BillPage> {
     return Row(
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width * .3,
+          width: MediaQuery.of(context).size.width * .4,
           child: Center(
             child: Row(
               children: [
@@ -393,7 +410,7 @@ class _BillPageState extends State<BillPage> {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * .2,
+          width: MediaQuery.of(context).size.width * .15,
           child: Center(
             child: Text(
               '$number',
@@ -404,7 +421,7 @@ class _BillPageState extends State<BillPage> {
           ),
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * .25,
+          width: MediaQuery.of(context).size.width * .2,
           child: Center(
             child: Text(
               '${oCcy.format(price)}đ',

@@ -13,6 +13,17 @@ class TableService {
         const result = await this.Table.findOneAndDelete({_id: id})
         return result.ok;
     }
+    async update(id, payload){
+        console.log(payload);
+        const result = await this.Table.findOneAndUpdate({_id: id},
+            {
+                $set: {
+                    'trang_thai_ban_an': payload.trang_thai_ban_an
+                }
+            }
+            )
+        return result.ok;
+    }
     async addTable(data){
        await this.Table.insertOne({_id: data.so_ban, so_cho_ngoi: data.so_cho_ngoi, trang_thai_ban_an: "Trống"}) 
     }

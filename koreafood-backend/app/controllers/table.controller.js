@@ -22,6 +22,18 @@ exports.delete = async (req, res, next) => {
         return console.log(`Có Lỗi Trong Lúc Xóa Bàn Ăn!!!`);
     }
 };
+exports.update = async (req, res, next) => {
+    try {
+        const tableService = new TableService(MongoDB.client);
+        const document = await tableService.update(req.params.id, req.body);
+        if (document == 1) {
+            return res.send({ message: `Cập Nhật Thành Công!!!` })
+        }
+        return res.send(document);
+    } catch (error) {
+        return console.log(`Có Lỗi Trong Lúc Cập Nhật Bàn Ăn!!!`);
+    }
+};
 exports.addTable = async (req, res, next) => {
     try {
         const tableService = new TableService(MongoDB.client);

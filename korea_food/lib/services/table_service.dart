@@ -33,23 +33,24 @@ class TablesService {
     }
   }
 
-  // Future<bool> updateTable(Table pet) async {
-  //   try {
-  //     final url = Uri.parse('$databaseUrl/tables/${pet.id}.json?auth=$token');
-  //     final response = await http.patch(
-  //       url,
-  //       body: json.encode(pet.toJson()),
-  //     );
+  Future<bool> updateTable(String id, String trang_thai_ban_an) async {
+    try {
+      final tablesUrl = Uri.http(Url, "/api/table/QLBA/$id");
 
-  //     if (response.statusCode != 200) {
-  //       throw Exception(json.decode(response.body)['error']);
-  //     }
+      final response = await http.put(
+        tablesUrl,
+        body: json.encode({'trang_thai_ban_an': trang_thai_ban_an}),
+        headers: {"Content-Type": "application/json"},
+      );
 
-  //     return true;
-  //   } catch (error) {
-  //     print(error);
-  //     return false;
-  //   }
-  // }
+      if (response.statusCode != 200) {
+        throw Exception(json.decode(response.body)['error']);
+      }
 
+      return true;
+    } catch (error) {
+      print(error);
+      return false;
+    }
+  }
 }

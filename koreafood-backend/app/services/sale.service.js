@@ -22,8 +22,8 @@ class SaleService {
                 $set: {
                     ten_khuyen_mai: payload.ten_khuyen_mai,
                     chi_tiet_khuyen_mai: payload.chi_tiet_khuyen_mai,
-                    gia_tri: payload.gia_tri,
-                    rang_buoc: payload.rang_buoc
+                    gia_tri: Number(payload.gia_tri),
+                    rang_buoc: Number(payload.rang_buoc)
                 }
             }
         )
@@ -35,8 +35,8 @@ class SaleService {
             _id: payload.mkm,
             ten_khuyen_mai: payload.ten_khuyen_mai,
             chi_tiet_khuyen_mai: payload.chi_tiet_khuyen_mai,
-            gia_tri: payload.gia_tri,
-            rang_buoc: payload.rang_buoc
+            gia_tri: Number(payload.gia_tri),
+            rang_buoc: Number(payload.rang_buoc)
         })
         return result;
     }
