@@ -6,6 +6,7 @@ class User {
       gioi_tinh,
       dia_chi,
       so_dien_thoai,
+      email,
       hinh_anh_tai_khoan;
   String? id;
   Account tai_khoan;
@@ -19,6 +20,7 @@ class User {
       required this.gioi_tinh,
       required this.dia_chi,
       required this.so_dien_thoai,
+      required this.email,
       required this.hinh_anh_tai_khoan,
       required this.tai_khoan});
 
@@ -29,6 +31,7 @@ class User {
       'ngay_sinh': ngay_sinh.toString().split(' ').first,
       'gioi_tinh': gioi_tinh,
       'so_dien_thoai': so_dien_thoai,
+      'email': email,
       'dia_chi': dia_chi,
       'hinh_anh_tai_khoan': hinh_anh_tai_khoan,
       'tai_khoan': tai_khoan.toJson()
@@ -48,6 +51,7 @@ class User {
         ),
         gioi_tinh: json['gioi_tinh'],
         so_dien_thoai: json['so_dien_thoai'],
+        email: json['email'] ?? '',
         dia_chi: json['dia_chi'],
         hinh_anh_tai_khoan: json['hinh_anh_tai_khoan'],
         tai_khoan: Account.fromJson(json['tai_khoan']));
@@ -60,6 +64,7 @@ class User {
       DateTime? ngay_sinh,
       String? gioi_tinh,
       String? so_dien_thoai,
+      String? email,
       String? dia_chi,
       String? hinh_anh_tai_khoan,
       Account? tai_khoan}) {
@@ -70,6 +75,7 @@ class User {
         ngay_sinh: ngay_sinh ?? this.ngay_sinh,
         gioi_tinh: gioi_tinh ?? this.gioi_tinh,
         so_dien_thoai: so_dien_thoai ?? this.so_dien_thoai,
+        email: email ?? this.email,
         dia_chi: dia_chi ?? this.dia_chi,
         hinh_anh_tai_khoan: hinh_anh_tai_khoan ?? this.hinh_anh_tai_khoan,
         tai_khoan: tai_khoan ?? this.tai_khoan);

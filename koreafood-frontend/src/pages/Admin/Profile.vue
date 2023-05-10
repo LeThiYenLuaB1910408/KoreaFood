@@ -1,6 +1,8 @@
 <script>
 import UserService from '@/services/user.service';
 import { useUserStore } from "@/stores/store";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     data() {
@@ -9,7 +11,8 @@ export default {
             acc,
             file: null,
             user: {},
-            password: {}
+            password: {},
+            url: null
         }
     },
     methods: {
@@ -29,33 +32,60 @@ export default {
         },
         changeFile(event) {
             this.file = event.target.files[0];
+            this.url = URL.createObjectURL(this.file);
         },
         async updateAvar() {
             const formData = new FormData();
             formData.append('file', this.file);
             await UserService.updateAvar(formData, this.acc.user._id);
             this.file = null;
+            toast("Cập Nhật Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.getUser();
         },
-        async getUser(){
+        async getUser() {
             this.user = await UserService.getUser(this.acc.user._id);
             this.acc.user = this.user;
         },
-        async updatePassword(){
-            if(this.password.new != this.password.newconFirm){
-                alert('Xác Nhận Mật Khẩu Không Trùng Khớp!!!')
-            }else {
+        async updatePassword() {
+            if (this.password.new != this.password.newconFirm) {
+                toast("Mật Khẩu Không Trùng Khớp", {
+                    autoClose: 2000,
+                    type: 'error',
+                    theme: 'colored'
+                });
+            } else {
                 const result = await UserService.updatePassword(this.acc.user._id, this.password);
-                alert(result.message);
+                if (result.message == 'Mật Khẩu Không Đúng!!!') {
+                    toast(result.message, {
+                        autoClose: 1000,
+                        type: 'error',
+                        theme: 'colored'
+                    });
+                }else{
+                    toast(result.message, {
+                        autoClose: 1000,
+                        type: 'success',
+                        theme: 'colored'
+                    });
+                }
+
             }
         },
-        async updateProfile(){
+        async updateProfile() {
             const rs = await UserService.updateProfile(this.user);
-            alert(rs.message);
+            toast("Cập Nhật Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.getUser();
         }
     },
-    created(){
+    created() {
         this.getUser();
     }
 }
@@ -68,8 +98,9 @@ export default {
     <div class="container mt-5 border w-50">
         <div class="d-flex justify-content-center">
             <div class="d-flex align-items-end">
-                <img :src="`src/assets/images/${this.user.hinh_anh_tai_khoan}`" class="rounded-circle" alt=""
-                    style="width: 170px;">
+                <div class="rounded-circle" style="width: 200px; height: 200px; overflow: hidden;">
+                    <img :src="`src/assets/images/${this.user.hinh_anh_tai_khoan}`" alt="" style="width: 100%;">
+                </div>
                 <div class="d-flex">
                     <h4>{{ this.user.ho_ten }}</h4>
                     <div class="dropup">
@@ -102,13 +133,18 @@ export default {
                         <h5 class="modal-title" id="staticBackdropLabel">Đổi Ảnh Đại Diện</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body d-flex justify-content-center">
                         <label v-if="this.file == null" @click="call" for="avar" id="change"
                             class="form-label fw-bold avar">+ Chọn Ảnh</label>
-                        <label v-else for="avar" id="change" class="form-label fw-bold avar">{{ this.file.name }}</label>
+                        <div v-else class="text-center">
+                            <div class="rounded-circle text-center" style="width: 200px; height: 200px; overflow: hidden;">
+                                <img v-if="this.url != null" :src="this.url" alt="" style="width: 100%;">
+                            </div>
+                            <label id="change" for="avar" class="form-label fw-bold avar mt-3">{{ this.file.name }}</label>
+                        </div>
                         <div class="row m-3" style="display: none;">
                             <input type="file" @change="changeFile($event)" class="form-control border rounded-0" id="avar"
-                                name="avar" />
+                                name="avar" accept="image/png, image/gif, image/jpeg" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -122,7 +158,7 @@ export default {
         <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
-                <div class="modal-header">
+                    <div class="modal-header">
                         <h5 class="modal-title" id="staticBackdropLabel">Thay Đổi Thông Tin Cá Nhân</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -130,11 +166,13 @@ export default {
                         <div class="row">
                             <div class="col-md-5 mb-3 mt-3">
                                 <label for="ht" class="form-label">Họ Và Tên</label>
-                                <input v-model="this.user.ho_ten" type="text" class="form-control border rounded-0" id="ht" name="ht" />
+                                <input v-model="this.user.ho_ten" type="text" class="form-control border rounded-0" id="ht"
+                                    name="ht" />
                             </div>
                             <div class="col-md-4 mb-3 mt-3">
                                 <label for="sdt" class="form-label">Số điện thoại:</label>
-                                <input v-model="this.user.so_dien_thoai" type="text" class="form-control border rounded-0" id="sdt" name="sdt" />
+                                <input v-model="this.user.so_dien_thoai" type="text" class="form-control border rounded-0"
+                                    id="sdt" name="sdt" />
                             </div>
                             <div class=" col-md-3 mb-3 mt-3">
                                 <label for="gt" class="form-label">Giới Tính</label>
@@ -149,25 +187,26 @@ export default {
                         <div class="row">
                             <div class="col-md-7 mb-3 mt-3">
                                 <label for="dc" class="form-label">Địa Chỉ:</label>
-                                <input v-model="this.user.dia_chi" type="text" class="form-control border rounded-0" id="dc" name="dc" />
+                                <input v-model="this.user.dia_chi" type="text" class="form-control border rounded-0" id="dc"
+                                    name="dc" />
                             </div>
                             <div class="col-md-5 my-3">
                                 <label for="ns" class="form-label">Ngày Sinh:</label>
-                                <input v-model="this.user.ngay_sinh" type="date" class="form-control border rounded-0" id="ns" name="ns" />
+                                <input v-model="this.user.ngay_sinh" type="date" class="form-control border rounded-0"
+                                    id="ns" name="ns" />
                             </div>
                         </div>
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary rounded-0" data-bs-dismiss="modal">Đóng</button>
-                        <button @click="updateProfile" type="button" data-bs-dismiss="modal" class="btn btn-primary rounded-0">Lưu</button>
+                        <button @click="updateProfile" type="button" data-bs-dismiss="modal" aria-label="Close"
+                            class="btn btn-primary rounded-0">Lưu</button>
 
                     </div>
                 </div>
             </div>
         </div>
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-md modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -178,8 +217,8 @@ export default {
                         <label for="password1" class="form-label">Mật Khẩu Cũ:</label>
                         <div class="row">
                             <div class="col-11 my-3">
-                                <input v-model="this.password.old" type="password" class="form-control border rounded-0" id="password1"
-                                    name="password1" />
+                                <input v-model="this.password.old" type="password" class="form-control border rounded-0"
+                                    id="password1" name="password1" />
                             </div>
                             <div class="col-1 my-4 p-0"><button class="btn fw-bold p-0 border-0 text-success"
                                     @click="show('password1', $event)">Hiện</button></div>
@@ -187,8 +226,8 @@ export default {
                         <label for="password2" class="form-label">Mật Khẩu Mới:</label>
                         <div class="row">
                             <div class="col-11 my-3">
-                                <input v-model="this.password.new" type="password" class="form-control border rounded-0" id="password2"
-                                    name="password2" />
+                                <input v-model="this.password.new" type="password" class="form-control border rounded-0"
+                                    id="password2" name="password2" />
                             </div>
                             <div class="col-1 my-4 p-0"><button class="btn fw-bold p-0 border-0 text-success"
                                     @click="show('password2', $event)">Hiện</button></div>
@@ -196,8 +235,8 @@ export default {
                         <label for="password3" class="form-label">Xác Nhận Mật Khẩu Mới:</label>
                         <div class="row">
                             <div class="col-11 my-3">
-                                <input v-model="this.password.newconFirm" type="password" class="form-control border rounded-0" id="password3"
-                                    name="password3" />
+                                <input v-model="this.password.newconFirm" type="password"
+                                    class="form-control border rounded-0" id="password3" name="password3" />
                             </div>
                             <div class="col-1 my-4 p-0"><button class="btn fw-bold p-0 border-0 text-success"
                                     @click="show('password3', $event)">Hiện</button></div>

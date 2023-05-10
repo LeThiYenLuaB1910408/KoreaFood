@@ -55,6 +55,18 @@ exports.update = async (req, res, next) => {
         return console.log(`Có Lỗi Trong Lúc Cập Nhật Thực Đơn!!!`);
     }
 };
+exports.updateState = async (req, res, next) => {
+    try {
+        const menuService = new MenuService(MongoDB.client);
+        const document = await menuService.updateState(req.params.id, req.body);
+        if (document == 1) {
+            return res.send({ message: `Cập Nhật Trạng Thái Món Ăn Thành Công!!!` });
+        }
+        return res.send(document);
+    } catch (error) {
+        return console.log(`Có Lỗi Trong Lúc Cập Nhật Trạng Thái Món Ăn!!!`);
+    }
+};
 exports.delete = async (req, res, next) => {
     try {
         const menuService = new MenuService(MongoDB.client);

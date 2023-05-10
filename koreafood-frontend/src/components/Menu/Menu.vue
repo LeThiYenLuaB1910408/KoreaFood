@@ -36,7 +36,7 @@ export default {
     created() {
         this.getData();
     },
-}
+} 
 </script>
 
 <template>
@@ -50,7 +50,7 @@ export default {
     </div>
     <div v-if="this.dstk.length > 0" class="row ps-4 menu scroll">
         <div v-for="(e, i) in this.dstk" :key="i">
-            <MenuItems :img="`src/assets/images/${e.hinh_anh_mon_an}`" :name="`${e.ten_mon_an}`" />
+            <MenuItems :trang_thai_mon_an="e.trang_thai_mon_an" :id="e._id" :img="`src/assets/images/${e.hinh_anh_mon_an}`" :name="`${e.ten_mon_an}`" />
         </div>
     </div>
     <div v-else class="d-flex flex-column justify-content-center align-items-center" style="height: 100%;">

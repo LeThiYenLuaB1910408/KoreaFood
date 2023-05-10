@@ -1,5 +1,7 @@
 <script>
 import { useUserStore } from '@/stores/store';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     data() {
@@ -8,12 +10,23 @@ export default {
             acc
         }
     },
+    methods: {
+        logout() {
+            toast("Đăng Xuất Thành Công", {
+                autoClose: 500,
+                type: 'success',
+                theme: 'colored'
+            });
+            setTimeout(() => { this.$router.push("/login"); }, 1000)
+
+        }
+    },
 }
 </script>
 
 <template>
     <div class="col-3 container sidebar ps-4 position-sticky top-0">
-        <h3>KoreaFood</h3>
+        <h3>YL Food</h3>
         <hr class="text-light border border-1 border-light m-0">
         <nav class="mt-3">
             <ul>
@@ -22,7 +35,7 @@ export default {
                 </router-link>
             </ul>
 
-            <h6>MAIN MENU</h6>
+            <h6>MENU CHÍNH</h6>
             <ul>
                 <router-link to="/QLNV">
                     <li><i class="fa-regular fa-user me-2"></i>Quản Lý Nhân Viên</li>
@@ -55,7 +68,7 @@ export default {
                 </div>
 
             </ul>
-            <h6>OPTIONS</h6>
+            <h6>LỰA CHỌN KHÁC</h6>
             <ul>
                 <li><router-link to="#"><i class="fa-solid fa-question me-2"></i>Trợ Giúp</router-link></li>
                 <li><router-link to="#"><i class="fa-solid fa-gear me-2"></i>Cài Đặt</router-link></li>
@@ -74,8 +87,8 @@ export default {
                 <li>
                     <hr class="dropdown-divider">
                 </li>
-                <router-link class="dropdown-item text-danger fw-bold " to="/login">
-                    <li>Đăng Xuất<i class="fa-solid fa-right-from-bracket ms-2"></i></li>
+                <router-link class="dropdown-item text-danger fw-bold " to="#">
+                <li @click="logout">Đăng Xuất<i class="fa-solid fa-right-from-bracket ms-2"></i></li>
                 </router-link>
             </ul>
         </div>

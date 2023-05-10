@@ -8,7 +8,7 @@ const tableRouter = require("./app/routes/table.route");
 const saleRouter = require("./app/routes/sale.route");
 const billRouter = require("./app/routes/bill.route");
 const orderRouter = require("./app/routes/order.route");
-
+require('dotenv').config();
 const app = express();
 const fileUpload = require('express-fileupload');
 

@@ -57,7 +57,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                     const Expanded(
                       child: Center(
                         child: Text(
-                          'KoreaFood',
+                          'YL Food',
                           style: TextStyle(
                               fontFamily: 'Dancing Script',
                               color: Colors.white,
@@ -111,7 +111,7 @@ class _DetailInvoicePageState extends State<DetailInvoicePage> {
                               style: poppins.copyWith(fontSize: 16),
                             ),
                             Text(
-                              'KoreaFood',
+                              'YL Food',
                               style: TextStyle(
                                   fontFamily: 'Dancing Script', fontSize: 40),
                             ),

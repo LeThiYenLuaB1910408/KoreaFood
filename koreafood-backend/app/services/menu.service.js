@@ -12,7 +12,7 @@ class MenuService {
     }
 
     async getMenu(loai) {
-        const result = await this.Menu.find({id_loai_mon_an: loai})
+        const result = await this.Menu.find({ id_loai_mon_an: loai })
         return await result.toArray();
     }
     async delete(id) {
@@ -84,11 +84,23 @@ class MenuService {
         }
         return result.ok;
     }
-    async updateQuantity(payload){
-        console.log(payload);
-        payload.danh_sach_mon_an.forEach(async (e)=> {
+    async updateState(id, payload) {
+        result = await this.Menu.findOneAndUpdate(
+            { _id: id },
+            {
+                $set: {
+                    trang_thai_mon_an: payload.trang_thai_mon_an,
+                }
+            },
+            {
+                returnDocument: "after"
+            }
+        );
+    }
+    async updateQuantity(payload) {
+        payload.danh_sach_mon_an.forEach(async (e) => {
             await this.Menu.findOneAndUpdate(
-                {_id: e._id},
+                { _id: e._id },
                 {
                     $set: {
                         so_luong_ban_ra: e.so_luong_ban_ra + e.so_luong

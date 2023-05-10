@@ -1,10 +1,15 @@
 <script>
-import TableService from '@/services/table.service'
+import TableService from '@/services/table.service';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 export default {
     data() {
         return {
             ds: [],
             so_ban: '',
+            ban_an: {},
+            idEdit: null,
             so_cho_ngoi: null
         }
     },
@@ -12,17 +17,31 @@ export default {
         async getTable() {
             this.ds = await TableService.getTable()
         },
-        async delete(id){
-            if(confirm("Xác Nhận Xóa Bàn Ăn???")){
-                const result = await TableService.delete(id);
-                alert(result.message);
-            }
+        async delete(id) {
+            toast("Xóa Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
+            const result = await TableService.delete(id);
             this.getTable();
         },
-        async addTable(){
-            const rs = await TableService.addTable({so_ban: this.so_ban, so_cho_ngoi: this.so_cho_ngoi});
-            alert(rs.message);
+        async addTable() {
+            toast("Thêm Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
+            const rs = await TableService.addTable({ so_ban: this.so_ban, so_cho_ngoi: this.so_cho_ngoi });
             this.getTable();
+        },
+        setEdit(data) {
+            this.ban_an = data;
+            this.idEdit = data._id;
+        },
+        initData() {
+            this.ban_an = {};
+            this.idEdit = null;
         }
     },
     mounted() {
@@ -44,6 +63,25 @@ export default {
                         class="fa-solid fa-rotate-right ms-2"></i></button>
             </div>
         </div>
+        <div class="modal fade hide " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md modal-dialog-centered ">
+                <div class="modal-content rounded-0">
+                    <h5 class="modal-title text-center my-3" id="staticBackdropLabel">BẠN CÓ CHẮC CHẮN MUỐN XÓA?</h5>
+                    <div class="modal-body text-center">
+                        <i class="fa-regular fa-circle-xmark text-danger" style="font-size: 150px;"></i>
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button @click="initData" type="button" class="btn btn-secondary rounded-0 px-3 py-2 me-1"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger rounded-0 px-3 py-2"
+                            @click="this.delete(this.idEdit)">Xóa</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="modal fade hide" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-md">
                 <div class="modal-content">
@@ -55,21 +93,21 @@ export default {
                         <div class="row">
                             <div class="col-6 mb-3 mt-3">
                                 <label for="sb" class="form-label">Số Bàn</label>
-                                <input v-model="so_ban" type="text" class="form-control border rounded-0" id="sb" name="sb" />
+                                <input v-model="so_ban" type="text" class="form-control border rounded-0" id="sb"
+                                    name="sb" />
                             </div>
-                        <div class="col-6 mb-3 mt-3">
+                            <div class="col-6 mb-3 mt-3">
                                 <label for="cn" class="form-label">Số Chỗ Ngồi:</label>
-                                <input v-model="so_cho_ngoi" type="text" class="form-control border rounded-0" id="cn" name="cn" />
+                                <input v-model="so_cho_ngoi" type="text" class="form-control border rounded-0" id="cn"
+                                    name="cn" />
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary rounded-0 px-3 py-2"
                             data-bs-dismiss="modal">Đóng</button>
-                        <!-- <button v-if="this.idEdit != null" type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                                    >Lưu</button> -->
-                        <button type="submit" data-bs-dismiss="modal"
-                            class="btn btn-success rounded-0 px-3 py-2" @click="addTable()">Thêm</button>
+                        <button type="submit" data-bs-dismiss="modal" class="btn btn-success rounded-0 px-3 py-2"
+                            @click="addTable()">Thêm</button>
                     </div>
                 </div>
             </div>
@@ -79,19 +117,26 @@ export default {
                 <span>Tổng Số: <b>{{ this.ds.length }}</b> </span>
             </div>
             <div class="row">
-                <div class="col-10">
+                <div class="col-9">
                     <div class="row justify-content-center">
                         <div class="col-3 d-flex me-3  mb-3" v-for="(e, i) in this.ds" :key="i">
-                            <h4 v-if="e.trang_thai_ban_an === 'Trống'" class="col-12 text-light sb text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
-                            <h4 v-else-if="e.trang_thai_ban_an === 'Đang chuẩn bị'" class="col-12 text-light sb1 text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
-                            <h4 v-else="e.trang_thai_ban_an === 'Hoàn thành'" class="col-12 text-light sb2 text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
-                            <i class="fa-regular fa-square-minus fs-4 ms-1 text-danger" @click="this.delete(e._id)"></i>
+                            <h4 v-if="e.trang_thai_ban_an === 'Trống'"
+                                class="col-12 text-light sb text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
+                            <h4 v-else-if="e.trang_thai_ban_an === 'Đang chuẩn bị'"
+                                class="col-12 text-light sb1 text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
+                            <h4 v-else-if="e.trang_thai_ban_an === 'Đang đợi thanh toán'"
+                                class="col-12 text-light sb3 text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
+                            <h4 v-else="e.trang_thai_ban_an === 'Hoàn thành'"
+                                class="col-12 text-light sb2 text-center py-5 rounded-2">Bàn {{ e._id }}</h4>
+                            <i class="fa-regular fa-square-minus fs-4 ms-1 text-danger" @click="this.setEdit(e)"
+                                style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal1"></i>
                         </div>
                     </div>
                 </div>
-                <div class="col-2 mt-5">
+                <div class="col-3 mt-5">
                     <p><i class="fa-solid fa-circle me-1 empty"></i>Trống</p>
                     <p><i class="fa-solid fa-circle me-1 wait"></i>Đang Đợi Món</p>
+                    <p><i class="fa-solid fa-circle me-1 wait-payment"></i>Đang Đợi Thanh Toán</p>
                     <p><i class="fa-solid fa-circle me-1 finish"></i>Hoàn Thành</p>
                 </div>
 
@@ -128,12 +173,22 @@ button {
     box-shadow: 0px 1px 2px 0px grey;
 }
 
+.sb3 {
+    background-color: orange;
+    border: 1px solid orange;
+    box-shadow: 0px 1px 2px 0px grey;
+}
+
 .empty {
     color: rgb(185, 183, 183);
 }
 
 .wait {
     color: rgb(225, 207, 41);
+}
+
+.wait-payment {
+    color: orange;
 }
 
 .finish {
@@ -152,4 +207,5 @@ button {
     background-color: grey !important;
     color: white !important;
     font-weight: bold;
-}</style>
+}
+</style>

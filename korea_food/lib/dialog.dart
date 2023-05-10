@@ -8,17 +8,24 @@ Future<bool?> showConfirmDialog(BuildContext context, String message) {
   return showDialog(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: const Text('Are you sure'),
+      title: const Text(
+        'CẢNH BÁO',
+        style: TextStyle(color: Colors.red),
+      ),
       content: Text(message),
       actions: <Widget>[
         TextButton(
-          child: const Text('No'),
+          child: const Text(
+            'Không',
+            style: TextStyle(fontSize: 18),
+          ),
           onPressed: () {
             Navigator.of(ctx).pop(false);
           },
         ),
         TextButton(
-          child: const Text('Yes'),
+          child: const Text('Có',
+              style: TextStyle(fontSize: 18, color: Colors.red)),
           onPressed: () {
             Navigator.of(ctx).pop(true);
           },
@@ -32,11 +39,11 @@ Future<bool?> showMessageDialog(BuildContext context, String message) {
   return showDialog(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text("THÔNG BÁO"),
+      title: Text("THÔNG BÁO", style: TextStyle(color: Colors.red)),
       content: Text(message),
       actions: <Widget>[
         TextButton(
-          child: const Text('okiii'),
+          child: const Text('OK', style: TextStyle(fontSize: 18)),
           onPressed: () => Navigator.of(context).pop(false),
         ),
       ],
@@ -48,11 +55,11 @@ Future<bool?> showSuccessDialog(BuildContext context, String message) {
   return showDialog(
     context: context,
     builder: (ctx) => AlertDialog(
-      title: Text("THÔNG BÁO"),
+      title: Text("THÔNG BÁO", style: TextStyle(color: Colors.red)),
       content: Text(message),
       actions: <Widget>[
         TextButton(
-          child: const Text('okiii'),
+          child: const Text('OK', style: TextStyle(fontSize: 18)),
           onPressed: () {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const UserPage()));
@@ -87,7 +94,7 @@ Future<bool?> showSuccessDialogOrder(BuildContext context, String msg) {
         TextButton(
           child: const Text(
             'Quay Về Trang Chủ',
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: Colors.red, fontSize: 18),
           ),
           onPressed: () {
             Navigator.of(context).push(
@@ -104,13 +111,13 @@ Future<void> showErrorDialog(BuildContext context, String message) {
     context: context,
     builder: (ctx) => AlertDialog(
       title: const Text(
-        'LỖI!',
+        'LỖI',
         style: TextStyle(color: Colors.red),
       ),
       content: Text(message),
       actions: <Widget>[
         TextButton(
-          child: const Text('Oki'),
+          child: const Text('OK', style: TextStyle(fontSize: 18)),
           onPressed: () {
             Navigator.of(ctx).pop();
           },

@@ -106,7 +106,7 @@ class _OrderPageState extends State<OrderPage> {
                   const Expanded(
                     child: Center(
                       child: Text(
-                        'KoreaFood',
+                        'YL Food',
                         style: TextStyle(
                             fontFamily: 'Dancing Script',
                             color: Colors.white,
@@ -145,7 +145,7 @@ class _OrderPageState extends State<OrderPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Table ${widget.table.id}',
+                'Bàn Số ${widget.table.id}',
                 style: poppins.copyWith(
                     color: Colors.black,
                     fontSize: 22,
@@ -184,7 +184,7 @@ class _OrderPageState extends State<OrderPage> {
                         width: MediaQuery.of(context).size.width * .4,
                         child: Center(
                           child: Text(
-                            'Name',
+                            'Tên món',
                             style: poppins.copyWith(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -195,7 +195,7 @@ class _OrderPageState extends State<OrderPage> {
                         width: MediaQuery.of(context).size.width * .35,
                         child: Center(
                           child: Text(
-                            'Number',
+                            'Số lượng',
                             style: poppins.copyWith(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -206,7 +206,7 @@ class _OrderPageState extends State<OrderPage> {
                         width: MediaQuery.of(context).size.width * .15,
                         child: Center(
                           child: Text(
-                            'Price',
+                            'Giá',
                             style: poppins.copyWith(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
@@ -233,7 +233,7 @@ class _OrderPageState extends State<OrderPage> {
                           direction: DismissDirection.endToStart,
                           confirmDismiss: (direction) {
                             return showConfirmDialog(
-                                context, 'Do you want to remove the food?');
+                                context, 'Bạn có muốn xóa bỏ món ăn này?');
                           },
                           background: Container(
                             color: Colors.red,
@@ -263,7 +263,7 @@ class _OrderPageState extends State<OrderPage> {
                                     .gia_mon_an,
                               ),
                               Text(
-                                '(Notes: ${productsOrder[productsOrder.length - 1 - i].ghi_chu})',
+                                '(Ghi chú: ${productsOrder[productsOrder.length - 1 - i].ghi_chu})',
                                 style: poppins.copyWith(
                                   fontStyle: FontStyle.italic,
                                 ),
@@ -284,34 +284,77 @@ class _OrderPageState extends State<OrderPage> {
                     future: _refreshProductOrder(context),
                     builder: (context, snapshot) => SizedBox(
                       height: 53.5 * productsBill.length,
-                      child: ListView.builder(
-                        itemCount: productsBill.length,
-                        itemBuilder: (BuildContext context, int i) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              OrderItem(
-                                context,
-                                productsBill[i].ten_mon_an,
-                                productsBill[i].so_luong_dat!,
-                                productsBill[i].gia_mon_an,
-                              ),
-                              Text(
-                                '(Notes: ${productsBill[i].ghi_chu})',
-                                style: poppins.copyWith(
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
-                                child: Divider(
-                                  thickness: 1,
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+                      child: productsBill.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: productsBill.length,
+                              itemBuilder: (BuildContext context, int i) {
+                                return Dismissible(
+                                  key: const ValueKey(Icons.wifi_1_bar_sharp),
+                                  onDismissed: (direction) {
+                                    setState(() {
+                                      productsBill.removeAt(i);
+                                      context.read<OrderManager>().updateOrder(
+                                          [...productsBill, ...productsOrder],
+                                          user.id!,
+                                          widget.table.id!,
+                                          context.read<OrderManager>().total([
+                                            ...productsBill,
+                                            ...productsOrder
+                                          ]));
+                                      if (productsBill.isEmpty) {
+                                        context
+                                            .read<OrderManager>()
+                                            .deleteOrder(widget.table.id!);
+                                        context
+                                            .read<TablesManager>()
+                                            .updateTable(
+                                                widget.table.id!, 'Trống');
+                                      }
+                                    });
+                                  },
+                                  direction: DismissDirection.endToStart,
+                                  confirmDismiss: (direction) {
+                                    return showConfirmDialog(context,
+                                        'Bạn có muốn xóa bỏ món ăn này?');
+                                  },
+                                  background: Container(
+                                    color: Colors.red,
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.only(right: 20),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 4, horizontal: 15),
+                                    child: const Icon(Icons.delete_outlined,
+                                        color: Colors.white),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      OrderItem(
+                                        context,
+                                        productsBill[i].ten_mon_an,
+                                        productsBill[i].so_luong_dat!,
+                                        productsBill[i].gia_mon_an,
+                                      ),
+                                      Text(
+                                        '(Ghi chú: ${productsBill[i].ghi_chu})',
+                                        style: poppins.copyWith(
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
+                                        child: Divider(
+                                          thickness: 1,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            )
+                          : SizedBox(),
                     ),
                   ),
                 ],
@@ -327,42 +370,44 @@ class _OrderPageState extends State<OrderPage> {
     return Container(
       height: 60,
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Text(
-                'TOTAL: ',
-                style: poppins.copyWith(
-                  fontSize: 20,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              FutureBuilder(
-                future: _refreshProductOrder(context),
-                builder: (context, snapshot) => Text(
-                  oCcy.format(context
-                      .read<OrderManager>()
-                      .total([...productsBill, ...productsOrder])),
-                  style: poppins.copyWith(
-                    fontSize: 22,
-                    color: Colors.red,
+      child: widget.table.trang_thai_ban_an == "Trống"
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  child: Row(
+                    children: [
+                      Text(
+                        'TỔNG TIỀN: ',
+                        style: poppins.copyWith(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      FutureBuilder(
+                        future: _refreshProductOrder(context),
+                        builder: (context, snapshot) => Text(
+                          oCcy.format(context
+                              .read<OrderManager>()
+                              .total([...productsBill, ...productsOrder])),
+                          style: poppins.copyWith(
+                            fontSize: 22,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
+                      const Text(
+                        'đ',
+                        style: TextStyle(
+                            fontFeatures: [const FontFeature.superscripts()],
+                            fontSize: 18,
+                            color: Colors.red),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const Text(
-                'đ',
-                style: TextStyle(
-                    fontFeatures: [const FontFeature.superscripts()],
-                    fontSize: 18,
-                    color: Colors.red),
-              ),
-            ],
-          ),
-          widget.table.trang_thai_ban_an == "Trống"
-              ? Container(
+                Container(
                   padding: const EdgeInsets.only(
                       top: 0, bottom: 0, left: 30, right: 30),
                   decoration: BoxDecoration(
@@ -386,7 +431,7 @@ class _OrderPageState extends State<OrderPage> {
                           }
                         },
                         child: Text(
-                          'SEND ORDER',
+                          'LẬP ĐƠN',
                           style: poppins.copyWith(
                             fontSize: 14,
                             color: Colors.white,
@@ -396,72 +441,101 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                     ],
                   ),
+                ),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(
+                      top: 0, bottom: 0, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromARGB(255, 225, 207, 41)),
+                  child: productsOrder.isNotEmpty
+                      ? TextButton(
+                          onPressed: () {
+                            context.read<OrderManager>().updateOrder(
+                                [...productsBill, ...productsOrder],
+                                user.id!,
+                                widget.table.id!,
+                                context.read<OrderManager>().total(
+                                    [...productsBill, ...productsOrder]));
+                            context
+                                .read<TablesManager>()
+                                .updateTable(widget.table.id!, "Đang chuẩn bị");
+                            showSuccessDialogOrder(
+                                context, 'CẬP NHẬT ĐƠN HÀNG THÀNH CÔNG');
+                          },
+                          child: Text(
+                            'CẬP NHẬT',
+                            style: poppins.copyWith(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(
+                        top: 0, bottom: 0, left: 15, right: 15),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red[700]),
+                    child: TextButton(
+                      onPressed: () {
+                        context
+                            .read<OrderManager>()
+                            .deleteOrder(widget.table.id!);
+                        context
+                            .read<TablesManager>()
+                            .updateTable(widget.table.id!, 'Trống');
+                        showSuccessDialogOrder(context, 'ĐƠN HÀNG ĐÃ ĐƯỢC HỦY');
+                      },
+                      child: Text(
+                        'HỦY ĐƠN',
+                        style: poppins.copyWith(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    )),
+                const SizedBox(width: 20),
+                Container(
+                  padding: const EdgeInsets.only(
+                      top: 0, bottom: 0, left: 15, right: 15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.green),
+                  child: widget.table.trang_thai_ban_an == 'Đang chuẩn bị'
+                      ? TextButton(
+                          onPressed: () {
+                            context
+                                .read<TablesManager>()
+                                .updateTable(widget.table.id!, 'Hoàn thành');
+                            showSuccessDialogOrder(
+                                context, 'ĐƠN HÀNG HOÀN THÀNH');
+                          },
+                          child: Text(
+                            'HOÀN THÀNH',
+                            style: poppins.copyWith(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )
+                      : Payment(user),
                 )
-              : Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                          top: 0, bottom: 0, left: 15, right: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: const Color.fromARGB(255, 225, 207, 41)),
-                      child: productsOrder.isNotEmpty
-                          ? TextButton(
-                              onPressed: () {
-                                context.read<OrderManager>().updateOrder(
-                                    [...productsBill, ...productsOrder],
-                                    user.id!,
-                                    widget.table.id!,
-                                    context.read<OrderManager>().total(
-                                        [...productsBill, ...productsOrder]));
-                                context.read<TablesManager>().updateTable(
-                                    widget.table.id!, "Đang chuẩn bị");
-                                showSuccessDialogOrder(
-                                    context, 'CẬP NHẬT ĐƠN HÀNG THÀNH CÔNG');
-                              },
-                              child: Text(
-                                'UPDATE',
-                                style: poppins.copyWith(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            )
-                          : const SizedBox(),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(
-                          top: 0, bottom: 0, left: 15, right: 15),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.green),
-                      child: widget.table.trang_thai_ban_an == 'Đang chuẩn bị'
-                          ? TextButton(
-                              onPressed: () {
-                                context.read<TablesManager>().updateTable(
-                                    widget.table.id!, 'Hoàn thành');
-                                showSuccessDialogOrder(
-                                    context, 'ĐƠN HÀNG HOÀN THÀNH');
-                              },
-                              child: Text(
-                                'FINISH',
-                                style: poppins.copyWith(
-                                  fontSize: 14,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            )
-                          : Payment(user),
-                    )
-                  ],
-                )
-        ],
-      ),
+              ],
+            ),
     );
   }
 
@@ -515,7 +589,7 @@ class _OrderPageState extends State<OrderPage> {
                                 child: TextButton(
                                   onPressed: () {},
                                   child: Text(
-                                    'Confirm Receipt',
+                                    'Xác Nhận Hóa Đơn',
                                     style: poppins.copyWith(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -552,7 +626,7 @@ class _OrderPageState extends State<OrderPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Total',
+                                'Tổng tiền',
                                 style: poppins.copyWith(
                                   fontSize: 18,
                                 ),
@@ -578,7 +652,7 @@ class _OrderPageState extends State<OrderPage> {
                               width: 15,
                             ),
                             Text(
-                              'Payment Methods',
+                              'Phương thức thanh toán',
                               style: poppins.copyWith(
                                 fontSize: 18,
                               ),
@@ -600,10 +674,10 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             isExpanded: true,
                             hint: const Text(
-                              'Select Payment Methods',
+                              '-- Chọn --',
                               style: TextStyle(fontSize: 16),
                             ),
-                            items: ['Cash', 'Credit Card']
+                            items: ['Tiền mặt', 'Chuyển khoản ngân hàng']
                                 .map((item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
@@ -614,7 +688,7 @@ class _OrderPageState extends State<OrderPage> {
                                       ),
                                     ))
                                 .toList(),
-                            value: 'Cash',
+                            value: 'Tiền mặt',
                             onChanged: (value) {
                               stateSetter(() {
                                 phuong_thuc_thanh_toan = value.toString();
@@ -648,7 +722,7 @@ class _OrderPageState extends State<OrderPage> {
                               width: 15,
                             ),
                             Text(
-                              'Select Discount',
+                              'Chọn khuyến mãi (Nếu có)',
                               style: poppins.copyWith(
                                 fontSize: 18,
                               ),
@@ -670,7 +744,7 @@ class _OrderPageState extends State<OrderPage> {
                             ),
                             isExpanded: true,
                             hint: const Text(
-                              'Select Discount',
+                              '-- Chọn --',
                               style: TextStyle(fontSize: 16),
                             ),
                             items: discounts
@@ -727,7 +801,7 @@ class _OrderPageState extends State<OrderPage> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'TOTAL PAYMENT: ',
+                                      'THANH TOÁN: ',
                                       style: poppins.copyWith(
                                         fontSize: 20,
                                         color: Colors.black,
@@ -754,7 +828,7 @@ class _OrderPageState extends State<OrderPage> {
                                 padding: const EdgeInsets.only(
                                     top: 0, bottom: 0, left: 15, right: 15),
                                 margin: const EdgeInsets.only(right: 15),
-                                width: 100,
+                                width: 120,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Colors.green),
@@ -768,21 +842,20 @@ class _OrderPageState extends State<OrderPage> {
                                     int hd = await context
                                         .read<OrderManager>()
                                         .payment(
-                                          productsBill,
-                                          user.id!,
-                                          widget.table.id!,
-                                          total,
-                                          ma_giam_gia,
-                                          phuong_thuc_thanh_toan,
-                                          gia_tri_giam_gia,
-                                          so_luong
-                                        );
+                                            productsBill,
+                                            user.id!,
+                                            widget.table.id!,
+                                            total,
+                                            ma_giam_gia,
+                                            phuong_thuc_thanh_toan,
+                                            gia_tri_giam_gia,
+                                            so_luong);
                                     context
                                         .read<ProductManager>()
                                         .updateProduct(productsBill);
                                     context.read<TablesManager>().updateTable(
                                           widget.table.id!,
-                                          'Trống',
+                                          'Đang đợi thanh toán',
                                         );
                                     Navigator.of(context).pushAndRemoveUntil(
                                         MaterialPageRoute(
@@ -802,7 +875,7 @@ class _OrderPageState extends State<OrderPage> {
                                         (Route<dynamic> route) => false);
                                   },
                                   child: Text(
-                                    'CONFIRM',
+                                    'XÁC NHẬN',
                                     style: poppins.copyWith(
                                       fontSize: 14,
                                       color: Colors.white,
@@ -824,7 +897,7 @@ class _OrderPageState extends State<OrderPage> {
         );
       },
       child: Text(
-        'PAYMENT',
+        'THANH TOÁN',
         style: poppins.copyWith(
           fontSize: 14,
           color: Colors.white,
@@ -893,7 +966,7 @@ class _OrderPageState extends State<OrderPage> {
                                     child: TextButton(
                                       onPressed: () {},
                                       child: Text(
-                                        'All View',
+                                        'Xem Tất Cả',
                                         style: poppins.copyWith(
                                             color: Colors.white,
                                             fontSize: 20,
@@ -963,7 +1036,7 @@ class _OrderPageState extends State<OrderPage> {
                                   labelStyle: poppins.copyWith(
                                       color: const Color.fromARGB(
                                           255, 137, 136, 136)),
-                                  labelText: 'Search...',
+                                  labelText: 'Tìm kiếm...',
                                 ),
                               ),
                             ),
@@ -1038,7 +1111,7 @@ class _OrderPageState extends State<OrderPage> {
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   children: [
-                                                    Text('Price: ',
+                                                    Text('Giá: ',
                                                         style: poppins.copyWith(
                                                             color: const Color
                                                                     .fromARGB(
@@ -1117,7 +1190,7 @@ class _OrderPageState extends State<OrderPage> {
                                                                           81,
                                                                           81)),
                                                               labelText:
-                                                                  'Notes',
+                                                                  'Ghi chú',
                                                               border:
                                                                   InputBorder
                                                                       .none),
@@ -1199,7 +1272,7 @@ class _OrderPageState extends State<OrderPage> {
                                                     });
                                                   },
                                                   child: Text(
-                                                    'Add',
+                                                    'Thêm Món',
                                                     style: poppins.copyWith(
                                                         color: Colors.white,
                                                         fontSize: 18,

@@ -1,17 +1,23 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Home from '@/pages/Home/Home.vue';
 import Login from '@/pages/Login/Login.vue';
+import Accountant from '@/pages/Home/Accountant.vue';
 
 const routes = [
     {
         path: '/',
-        name: 'koreafood',
+        name: 'YL Food',
         component: Home,
     },
     {
         path: '/login',
         name: 'login',
         component: Login,
+    },
+    {
+        path: '/accountant',
+        name: 'accountant',
+        component: Accountant,
     },
     {
         path: '/admin',

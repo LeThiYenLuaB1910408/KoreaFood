@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:korea_food/config.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:korea_food/notification.dart';
+import 'package:korea_food/config.dart';
 import 'package:korea_food/const.dart';
 import 'package:korea_food/models/managers/table_manager.dart';
 import 'package:korea_food/models/managers/user_manager.dart';
@@ -10,11 +12,10 @@ import 'package:korea_food/models/user_model.dart';
 import 'package:korea_food/order.dart';
 import 'package:provider/provider.dart';
 import 'package:korea_food/user.dart';
-// import 'package:web_socket_channel/io.dart';
-// import 'package:web_socket_channel/status.dart' as status;
+import 'package:socket_io_client/socket_io_client.dart';
 
-// import 'package:socket_io_client/socket_io_client.dart';
-// import 'package:socket_io_client/socket_io_client.dart' as IO;
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   late Future<void> _fetchTables;
   late List tables;
   late User user;
+  late Socket socket;
 
   Future<void> _refreshTable(BuildContext context) async {
     await context.read<TablesManager>().fetchTables();
@@ -39,42 +41,32 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    Noti.initialize(flutterLocalNotificationsPlugin);
     super.initState();
     _refreshTable(context);
     _refreshUser(context);
-    // try {
-    //   // Configure socket transports must be sepecified
-    //   socket = io(socketUrl, <String, dynamic>{
-    //     'transports': ['websocket'],
-    //   });
+    try {
+      // Configure socket transports must be sepecified
+      socket = io(socketUrl, <String, dynamic>{
+        'transports': ['websocket'],
+      });
+      socket.connect();
+      socket.on('connect', (_) => print('connect: ${socket.id}'));
 
-    //   // Connect to websocket
-    //   socket.connect();
-
-    //   // Handle socket events
-    //   socket.on('connect', (_) => print('connect: ${socket.id}'));
-    //   socket.on('location', (data) {
-    //     print('location ' + data);
-    //   });
-    //   socket.on('typing', (data) {
-    //     print('typing ' + data);
-    //   });
-    //   socket.emit("getTable");
-    //   socket.on('getTable', (data) {
-    //     tables = (data);
-    //   });
-    //   socket.on('disconnect', (_) => print('disconnect'));
-    //   socket.on('fromServer', (_) => print(_));
-    // } catch (e) {
-    //   print(e.toString());
-    // }
+      socket.on('message', (data) {
+        Noti.showBigTextNotification(
+            title: "THÔNG BÁO",
+            body: data,
+            fln: flutterLocalNotificationsPlugin);
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
-  late Socket socket;
   @override
   Widget build(BuildContext context) {
     user = context.read<UserManager>().user;
-    // final tableManager = TablesManager();
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -98,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          'KoreaFood',
+                          'YL Food',
                           style: TextStyle(
                               fontFamily: 'Dancing Script',
                               color: Colors.white,
@@ -158,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                           color: Color.fromARGB(255, 197, 194, 194),
                         ),
                         Text(
-                          'Empty',
+                          'Trống',
                           style: poppins,
                         )
                       ]),
@@ -170,7 +162,19 @@ class _HomePageState extends State<HomePage> {
                           color: Color.fromRGBO(225, 207, 41, 1),
                         ),
                         Text(
-                          'Waiting...',
+                          'Đợi món',
+                          style: poppins,
+                        )
+                      ]),
+                    ),
+                    Container(
+                      child: Row(children: [
+                        Icon(
+                          Icons.circle,
+                          color: Color.fromARGB(212, 251, 167, 33),
+                        ),
+                        Text(
+                          'Chờ thanh toán',
                           style: poppins,
                         )
                       ]),
@@ -182,7 +186,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.green,
                         ),
                         Text(
-                          'Finished',
+                          'Hoàn thành',
                           style: poppins,
                         )
                       ]),
@@ -204,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                         builder: (context, tableManager, child) {
                           return SizedBox(
                             height:
-                                MediaQuery.of(context).size.height * 0.9 - 50,
+                                MediaQuery.of(context).size.height * 0.8 - 50,
                             width: MediaQuery.of(context).size.width,
                             child: GridView.builder(
                               padding: EdgeInsets.all(20),
@@ -234,11 +238,16 @@ class _HomePageState extends State<HomePage> {
                                                       .trang_thai_ban_an ==
                                                   'Đang chuẩn bị'
                                               ? Color.fromRGBO(225, 207, 41, 1)
-                                              : Colors.green,
+                                              : tableManager.tables[i]
+                                                          .trang_thai_ban_an ==
+                                                      'Đang đợi thanh toán'
+                                                  ? Color.fromARGB(
+                                                      212, 251, 167, 33)
+                                                  : Colors.green,
                                       borderRadius: BorderRadius.circular(5)),
                                   child: Center(
                                     child: Text(
-                                      'Table ${tableManager.tables[i].id}',
+                                      'Bàn Số ${tableManager.tables[i].id}',
                                       style: poppins.copyWith(
                                           color: Colors.white, fontSize: 18),
                                     ),

@@ -1,5 +1,7 @@
 <script>
 import MenuService from "@/services/menu.service";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     data() {
@@ -37,16 +39,21 @@ export default {
             formData.append('file', this.hinh_anh);
             this.buildFormData(formData, { ...this.mon_an, msp: msp })
             const rs = await MenuService.addDish(formData);
-            alert(rs.message);
+            toast("Thêm Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.initData();
             this.getData();
         },
         async delete(id) {
-            if (confirm('Xác nhận xóa món ăn??')) {
-                const rs = await MenuService.delete(id);
-                alert(rs.message);
-            }
-
+            toast("Xóa Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
+            const rs = await MenuService.delete(id);
             this.getData();
         },
         async updateDish() {
@@ -54,7 +61,11 @@ export default {
             formData.append('file', this.hinh_anh);
             this.buildFormData(formData, { ...this.mon_an, msp: this.idEdit })
             const rs = await MenuService.updateDish(this.idEdit, formData);
-            alert(rs.message);
+            toast("Cập Nhật Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.initData();
             this.getData();
         },
@@ -97,6 +108,25 @@ export default {
                     aria-label="Example text with button addon" aria-describedby="button-addon1">
             </div>
         </div>
+        <div class="modal fade hide " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md modal-dialog-centered ">
+                <div class="modal-content rounded-0">
+                    <h5 class="modal-title text-center my-3" id="staticBackdropLabel">BẠN CÓ CHẮC CHẮN MUỐN XÓA?</h5>
+                    <div class="modal-body text-center">
+                        <i class="fa-regular fa-circle-xmark text-danger" style="font-size: 150px;"></i>
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button @click="initData" type="button" class="btn btn-secondary rounded-0 px-3 py-2 me-1"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger rounded-0 px-3 py-2"
+                            @click="this.delete(this.idEdit)">Xóa</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="modal fade hide" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
@@ -119,13 +149,15 @@ export default {
                             <div class="col-3 my-3">
                                 <label for="state" class="form-label">Trạng Thái:</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" id="flexRadioDefault1" value="1" v-model="mon_an.trang_thai_mon_an" type="radio" name="flexRadioDefault" >
+                                    <input class="form-check-input" id="flexRadioDefault1" value="1"
+                                        v-model="mon_an.trang_thai_mon_an" type="radio" name="flexRadioDefault">
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         Đang Bán
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" id="flexRadioDefault2" value="0" v-model="mon_an.trang_thai_mon_an" type="radio" name="flexRadioDefault">
+                                    <input class="form-check-input" id="flexRadioDefault2" value="0"
+                                        v-model="mon_an.trang_thai_mon_an" type="radio" name="flexRadioDefault">
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         Tạm Ngừng Bán
                                     </label>
@@ -146,7 +178,8 @@ export default {
                             </div>
                             <div class="col-6 my-3">
                                 <label for="ha" class="form-label">Hình Ảnh:</label>
-                                <input @change="changeFile($event)" type="file" class="form-control" id="ha">
+                                <input @change="changeFile($event)" type="file" class="form-control" id="ha"
+                                    accept="image/png, image/gif, image/jpeg">
                             </div>
                         </div>
 
@@ -183,13 +216,13 @@ export default {
                         <th scope="row">{{ e._id }}</th>
                         <td><img :src="`src/assets/images/${e.hinh_anh_mon_an}`" alt="" width="90"></td>
                         <td>{{ e.ten_mon_an }}</td>
-                        <td>{{ e.gia_mon_an }}đ</td>
+                        <td>{{ new Intl.NumberFormat('vi-VN').format(e.gia_mon_an) }}đ</td>
                         <td v-if="e.trang_thai_mon_an == 1">Đang Bán</td>
                         <td v-else>Tạm Ngừng Bán</td>
                         <td>{{ e.id_loai_mon_an }}</td>
                         <td><i class="fa-regular fa-pen-to-square me-2 fs-5" @click="this.setEdit(e)" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"></i><i class="fa-regular fa-trash-can fs-5"
-                                @click="this.delete(e._id)"></i>
+                                @click="this.setEdit(e)" data-bs-toggle="modal" data-bs-target="#exampleModal1"></i>
                         </td>
                     </tr>
                 </tbody>

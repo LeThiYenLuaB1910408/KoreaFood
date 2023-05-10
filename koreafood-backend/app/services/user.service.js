@@ -52,15 +52,41 @@ class UserService {
             gioi_tinh: payload.gioi_tinh,
             dia_chi: payload.dia_chi,
             so_dien_thoai: payload.so_dien_thoai,
+            email: payload.email,
             hinh_anh_tai_khoan: avatar,
             tai_khoan: {
                 ten_dang_nhap: `@${payload.so_dien_thoai}`,
                 mat_khau: mat_khau,
-                cap_quyen: '0',
+                cap_quyen: payload.tai_khoan.cap_quyen,
                 ngay_bat_dau_lam_viec: payload.tai_khoan.ngay_bat_dau_lam_viec
             }
         });
-        return result.acknowledged;
+        if (result.acknowledged != null) {
+            const nodemailer = require("nodemailer");
+
+            var transporter = nodemailer.createTransport({
+                service: "Gmail",
+                auth: {
+                    user: process.env.EMAIL,
+                    pass: process.env.PASS,
+                },
+            });
+
+            await transporter.sendMail({
+                from: '"Lê Thị Yến Lụa"',
+                to: payload.email,
+                subject: "THÔNG TIN TÀI KHOẢN NHÂN VIÊN YL FOOD",
+                text: "",
+                html: `<p>Thông tin tài khoản đăng nhập ứng dụng YL Food của bạn là:</p>
+                <p>Tên Đăng Nhập: <b>@${payload.so_dien_thoai}</b></p>
+                <p>Mật Khẩu: <b>@${payload.so_dien_thoai}</b></p>
+                <p>Vị Trí Công Việc: <b>${payload.tai_khoan.cap_quyen == 0 ? 'Nhân Viên Phục Vụ' : payload.tai_khoan.cap_quyen == 2 ? 'Thu Ngân' : 'Chủ Quán'}</b></p>
+                <p><b>Lưu ý: </b>Bạn có thể thay đổi mật khẩu tài khoản.</p>`,
+            });
+
+        }
+
+        return result;
     }
     async delete(id) {
         const result = await this.User.findOneAndDelete({ _id: id });
@@ -121,7 +147,7 @@ class UserService {
                 { _id: id },
                 {
                     $set: {
-                        'tai_khoan.mat_khau' : mat_khau
+                        'tai_khoan.mat_khau': mat_khau
                     }
                 }
             )
@@ -130,9 +156,9 @@ class UserService {
             return 0;
         }
     }
-    async updateProfile(id, payload){
+    async updateProfile(id, payload) {
         const rs = await this.User.findOneAndUpdate(
-            {_id: id},
+            { _id: id },
             {
                 $set: payload
             }

@@ -1,6 +1,7 @@
 <script>
 import UserService from "@/services/user.service";
-
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     data() {
@@ -22,23 +23,33 @@ export default {
             this.dstk = this.ds;
         },
         async addUser() {
-            const mnv = `NV${Number(this.ds[this.ds.length - 1]._id.slice(2, 3)) + 1}`;
+            const mnv = `NV${Number(this.ds[this.ds.length - 1]._id.split('V')[1]) + 1}`;
             const rs = await UserService.addUser({ mnv: mnv, ...this.nhan_vien });
-            alert(rs.message);
+            toast("Thêm Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.initData();
             this.getAll();
         },
         async update() {
             const result = await UserService.update(this.idEdit, this.nhan_vien);
             this.getAll();
-            alert(result.message);
+            toast("Cập Nhật Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             this.initData();
         },
         async delete(id) {
-            if (confirm("Xác nhận xóa tài khoản???")) {
-                const result = await UserService.delete(id);
-                alert(result.message);
-            }
+            toast("Xóa Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
+            const result = await UserService.delete(id);
             this.getAll();
         },
         search(event) {
@@ -47,7 +58,7 @@ export default {
         },
         setEdit(data) {
             this.idEdit = data._id,
-            this.nhan_vien = data
+                this.nhan_vien = data
         },
         initData() {
             this.nhan_vien = {
@@ -78,6 +89,25 @@ export default {
             <div class="col-6 text-end">
                 <input @input="search($event)" type="text" class="search" placeholder="Tìm kiếm..."
                     aria-label="Example text with button addon" aria-describedby="button-addon1">
+            </div>
+        </div>
+        <div class="modal fade hide " id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md modal-dialog-centered ">
+                <div class="modal-content rounded-0">
+                    <h5 class="modal-title text-center my-3" id="staticBackdropLabel">BẠN CÓ CHẮC CHẮN MUỐN XÓA?</h5>
+                    <div class="modal-body text-center">
+                        <i class="fa-regular fa-circle-xmark text-danger" style="font-size: 150px;"></i>
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button @click="initData" type="button" class="btn btn-secondary rounded-0 px-3 py-2 me-1"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger rounded-0 px-3 py-2"
+                            @click="this.delete(this.idEdit)">Xóa</button>
+
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="modal fade hide" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,7 +146,12 @@ export default {
                                 <input v-model="nhan_vien.cccd" type="text" class="form-control border rounded-0" id="dc"
                                     name="dc" />
                             </div>
-                            <div class="col-8 my-3">
+                            <div class="col-4 my-3">
+                                <label for="email" class="form-label">Email:</label>
+                                <input v-model="nhan_vien.email" type="text" class="form-control border rounded-0"
+                                    id="email" name="email" />
+                            </div>
+                            <div class="col-4 my-3">
                                 <label for="dc" class="form-label">Địa Chỉ:</label>
                                 <input v-model="nhan_vien.dia_chi" type="text" class="form-control border rounded-0" id="dc"
                                     name="dc" />
@@ -124,21 +159,30 @@ export default {
 
                         </div>
                         <div class="row">
-                            <div class="col-md-6 my-3">
+                            <div class="col-md-4 my-3">
                                 <label for="ns" class="form-label">Ngày Sinh:</label>
                                 <input v-model="nhan_vien.ngay_sinh" type="date" class="form-control border rounded-0"
                                     id="ns" name="ns" />
                             </div>
-                            <div class="col-md-6 mb-3 mt-3">
+                            <div class="col-md-4 mb-3 mt-3">
                                 <label for="nbd" class="form-label">Ngày Bắt Đầu Làm Việc:</label>
                                 <input v-model="nhan_vien.tai_khoan.ngay_bat_dau_lam_viec" type="date"
                                     class="form-control border rounded-0" id="nbd" name="nbd" />
+                            </div>
+                            <div class="col-md-4 mb-3 mt-3">
+                                <label for="cv" class="form-label">Chức Vụ</label>
+                                <select id="inputState" class="form-select" v-model="nhan_vien.tai_khoan.cap_quyen">
+                                    <option selected>- Chọn -</option>
+                                    <option value="2">Thu Ngân</option>
+                                    <option value="0">Nhân Viên Phục Vụ</option>
+                                </select>
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
-                        <button @click="initData" type="button" class="btn btn-secondary rounded-0" data-bs-dismiss="modal">Đóng</button>
+                        <button @click="initData" type="button" class="btn btn-secondary rounded-0"
+                            data-bs-dismiss="modal">Đóng</button>
                         <button @click="addUser" v-if="this.idEdit === null" type="button" data-bs-dismiss="modal"
                             class="btn btn-success rounded-0">Thêm</button>
                         <button @click="update" v-else type="button" data-bs-dismiss="modal"
@@ -157,8 +201,9 @@ export default {
                     <th scope="col">Mã</th>
                     <th scope="col">Họ Và Tên</th>
                     <th scope="col">Giới Tính</th>
-                    <th scope="col">Số Điện Thoại</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Địa Chỉ</th>
+                    <th scope="col">Chức Vụ</th>
                     <th scope="col">Khác</th>
                 </tr>
             </thead>
@@ -167,11 +212,14 @@ export default {
                     <th scope="row">{{ e._id }}</th>
                     <td>{{ e.ho_ten }}</td>
                     <td>{{ e.gioi_tinh }}</td>
-                    <td>{{ e.so_dien_thoai }}</td>
+                    <td>{{ e.email }}</td>
                     <td>{{ e.dia_chi }}</td>
+                    <td v-if="e.tai_khoan.cap_quyen == 1">Chủ Quán/Quản Lý</td>
+                    <td v-else-if="e.tai_khoan.cap_quyen == 0">Nhân Viên Phục Vụ</td>
+                    <td v-else>Thu Ngân</td>
                     <td><i @click="setEdit(e)" class="fa-regular fa-pen-to-square me-2 fs-5" data-bs-toggle="modal"
                             data-bs-target="#exampleModal"></i><i class="fa-regular fa-trash-can fs-5"
-                            @click="this.delete(e._id)"></i>
+                            @click="this.setEdit(e)" data-bs-toggle="modal" data-bs-target="#exampleModal2"></i>
                         <button class="border-0" style="background-color: transparent;" data-bs-toggle="modal"
                             data-bs-target="#exampleModal1" @click="this.selected = e">
                             <i class="fa-solid fa-circle-info fs-5"></i>
@@ -199,7 +247,9 @@ export default {
                                     <div class="col-5 text-start">
                                         <p><b>CCCD: </b>{{ this.selected.cccd }}</p>
                                         <p><b>Tên Tài Khoản: </b>{{ this.selected.tai_khoan.ten_dang_nhap }}</p>
-                                        <p v-if="this.selected.tai_khoan.cap_quyen != 1"><b>Vị Trí: </b>Nhân Viên Phục Vụ
+                                        <p v-if="this.selected.tai_khoan.cap_quyen == 0"><b>Vị Trí: </b>Nhân Viên Phục Vụ
+                                        </p>
+                                        <p v-else-if="this.selected.tai_khoan.cap_quyen == 2"><b>Vị Trí: </b> Thu Ngân
                                         </p>
                                         <p v-else><b>Vị Trí: </b>Chủ Quán</p>
                                         <p class="m-0 p-0"><b>Ngày Bắt Đầu Làm Việc: </b>{{

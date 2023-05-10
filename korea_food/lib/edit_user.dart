@@ -60,11 +60,11 @@ class _UserEditProfileState extends State<UserEditProfile> {
   TextFormField buildNameFied() {
     return TextFormField(
       initialValue: _editUser.ho_ten,
-      decoration: const InputDecoration(labelText: 'Name'),
+      decoration: const InputDecoration(labelText: 'Tên Tài Khoản'),
       textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please provide a value.';
+          return 'Vui lòng nhập thông tin.';
         }
         return null;
       },
@@ -77,11 +77,11 @@ class _UserEditProfileState extends State<UserEditProfile> {
   Widget buildAddressFied() {
     return TextFormField(
       initialValue: _editUser.dia_chi,
-      decoration: const InputDecoration(labelText: 'Address'),
+      decoration: const InputDecoration(labelText: 'Địa chỉ'),
       textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please provide a value.';
+          return 'Vui lòng nhập thông tin.';
         }
         return null;
       },
@@ -98,7 +98,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
       textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a CCCD.';
+          return 'Vui lòng nhập thông tin.';
         }
         return null;
       },
@@ -111,16 +111,33 @@ class _UserEditProfileState extends State<UserEditProfile> {
   TextFormField buildPhone() {
     return TextFormField(
       initialValue: _editUser.so_dien_thoai,
-      decoration: const InputDecoration(labelText: 'Phone'),
+      decoration: const InputDecoration(labelText: 'Sđt'),
       textInputAction: TextInputAction.next,
       validator: (value) {
         if (value!.isEmpty) {
-          return 'Please enter a phone.';
+          return 'Vui lòng nhập thông tin.';
         }
         return null;
       },
       onSaved: (value) {
         _editUser = _editUser.copyWith(so_dien_thoai: value);
+      },
+    );
+  }
+
+  TextFormField buildEmail() {
+    return TextFormField(
+      initialValue: _editUser.email,
+      decoration: const InputDecoration(labelText: 'Email'),
+      textInputAction: TextInputAction.next,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return 'Vui lòng nhập thông tin.';
+        }
+        return null;
+      },
+      onSaved: (value) {
+        _editUser = _editUser.copyWith(email: value);
       },
     );
   }
@@ -176,7 +193,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                     width: 5,
                   ),
                   Text(
-                    'Chọn Ảnh Thư Viện',
+                    'Chọn ảnh thư viện',
                     style: TextStyle(color: Colors.white),
                   )
                 ],
@@ -200,7 +217,7 @@ class _UserEditProfileState extends State<UserEditProfile> {
                     width: 5,
                   ),
                   Text(
-                    'Truy Cập Máy Ảnh',
+                    'Truy cập camera',
                     style: TextStyle(color: Colors.white),
                   )
                 ],
@@ -281,13 +298,13 @@ class _UserEditProfileState extends State<UserEditProfile> {
             },
             icon: Icon(
               Icons.arrow_back,
-              size: 30,
+              size: 26,
             ),
           ),
           backgroundColor: Color.fromARGB(255, 225, 207, 41),
           title: const Text(
-            'Edit User',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
+            'Chỉnh Sửa Thông Tin',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
           ),
           actions: [
             IconButton(
@@ -310,8 +327,8 @@ class _UserEditProfileState extends State<UserEditProfile> {
                       SizedBox(height: 10),
                       buildNameFied(),
                       buildAddressFied(),
-                      SizedBox(height: 10),
                       buildPhone(),
+                      buildEmail(),
                       buildID(),
                       buildDate(context),
                       const Divider(

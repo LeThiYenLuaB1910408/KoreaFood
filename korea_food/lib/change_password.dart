@@ -90,7 +90,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Change Password',
+                      Text('Đổi Mật Khẩu',
                           style: poppins.copyWith(
                             color: Colors.black,
                             decoration: TextDecoration.none,
@@ -99,7 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text('Please enter your password',
+                      Text('Vui lòng nhập mật khẩu',
                           style: poppins.copyWith(
                               color: Color.fromARGB(255, 144, 142, 142),
                               decoration: TextDecoration.none,
@@ -131,7 +131,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         labelStyle: poppins.copyWith(
                                             color: Color.fromARGB(
                                                 255, 82, 81, 81)),
-                                        labelText: 'Old Password',
+                                        labelText: 'Mật Khẩu Cũ',
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black))),
@@ -158,7 +158,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         labelStyle: poppins.copyWith(
                                             color: Color.fromARGB(
                                                 255, 82, 81, 81)),
-                                        labelText: 'New Password',
+                                        labelText: 'Mật Khẩu Mới',
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black))),
@@ -185,7 +185,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                         labelStyle: poppins.copyWith(
                                             color: Color.fromARGB(
                                                 255, 82, 81, 81)),
-                                        labelText: 'Confirm Password',
+                                        labelText: 'Xác Nhận Mật Khẩu',
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: _authData[
@@ -228,7 +228,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                               color: Colors.white,
                                             ),
                                             Text(
-                                              'PREVIOUS',
+                                              ' QUAY LẠI',
                                               style: poppins.copyWith(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold),
@@ -261,7 +261,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'CHANGE ',
+                                                  'THAY ĐỔI ',
                                                   style: poppins.copyWith(
                                                       color: Colors.white,
                                                       fontWeight:

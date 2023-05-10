@@ -14,7 +14,6 @@ class TableService {
         return result.ok;
     }
     async update(id, payload){
-        console.log(payload);
         const result = await this.Table.findOneAndUpdate({_id: id},
             {
                 $set: {

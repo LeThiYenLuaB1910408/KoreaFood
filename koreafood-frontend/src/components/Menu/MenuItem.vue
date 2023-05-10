@@ -1,21 +1,30 @@
 <script>
 import { Vue3ToggleButton } from 'vue3-toggle-button'
 import { ref } from 'vue'
+import MenuService from '@/services/menu.service';
 
 export default {
     components: { Vue3ToggleButton, ref },
     data() {
         return {
-            isActive: ref(true)
+            isActive: ref(this.trang_thai_mon_an == 1)
         }
     },
     props: {
         img: { type: String },
-        name: { type: String }
+        name: { type: String },
+        id: {type: String},
+        trang_thai_mon_an: {type: Number}
     },
     methods: {
-        toggle(value) {
-            isActive.value = !isActive.value;
+        async toggle() {
+            this.isActive = !this.isActive;
+
+            if(this.isActive){
+                await MenuService.updateState(this.id, {trang_thai_mon_an: 1});
+            }else{
+                await MenuService.updateState(this.id, {trang_thai_mon_an: 0});
+            }
         }
     }
 }
@@ -30,7 +39,7 @@ export default {
             <p class="fw-bold m-0">{{ name }}</p>
         </div>
         <div class="col-2">
-            <Vue3ToggleButton :isActive="isActive">
+            <Vue3ToggleButton :isActive="isActive" @onChange="toggle">
             </Vue3ToggleButton>
         </div>
     </div>

@@ -66,7 +66,7 @@ class _BillPageState extends State<BillPage> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          'KoreaFood',
+                          'YL Food',
                           style: TextStyle(
                               fontFamily: 'Dancing Script',
                               color: Colors.white,
@@ -109,7 +109,7 @@ class _BillPageState extends State<BillPage> {
                               style: poppins.copyWith(fontSize: 16),
                             ),
                             Text(
-                              'KoreaFood',
+                              'YL Food',
                               style: TextStyle(
                                   fontFamily: 'Dancing Script', fontSize: 40),
                             ),
@@ -396,16 +396,19 @@ class _BillPageState extends State<BillPage> {
         SizedBox(
           width: MediaQuery.of(context).size.width * .4,
           child: Center(
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    name,
-                    style: poppins.copyWith(color: Colors.black),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      name,
+                      style: poppins.copyWith(color: Colors.black),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

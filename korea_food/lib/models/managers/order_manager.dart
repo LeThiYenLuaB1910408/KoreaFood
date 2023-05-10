@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:korea_food/models/product_model.dart';
 import '../../services/order_service.dart';
@@ -14,6 +13,7 @@ class OrderManager with ChangeNotifier {
 
     notifyListeners();
   }
+ 
 
   Future<Map> sendOrder(
       List products, String manv, String so_ban, num total) async {
@@ -25,10 +25,22 @@ class OrderManager with ChangeNotifier {
     return await _orderService.updateOrder(products, manv, so_ban, total);
   }
 
-  Future<int> payment(List products, String manv, String so_ban, num total,
-      String ma_giam_gia, String phuong_thuc_thanh_toan, int gia_tri_giam_gia, int so_luong) async {
-    return await _orderService.payment(
-        products, manv, so_ban, total, ma_giam_gia, phuong_thuc_thanh_toan,gia_tri_giam_gia, so_luong);
+  Future<void> deleteOrder(
+      String id) async {
+    return await _orderService.deleteOrder(id);
+  }
+
+  Future<int> payment(
+      List products,
+      String manv,
+      String so_ban,
+      num total,
+      String ma_giam_gia,
+      String phuong_thuc_thanh_toan,
+      int gia_tri_giam_gia,
+      int so_luong) async {
+    return await _orderService.payment(products, manv, so_ban, total,
+        ma_giam_gia, phuong_thuc_thanh_toan, gia_tri_giam_gia, so_luong);
   }
 
   List<Product> get productsOrder {

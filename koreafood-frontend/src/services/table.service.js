@@ -10,6 +10,9 @@ class TableService{
     async delete(id){
         return (await this.api.delete(`/QLBA/${id}`)).data;
     }
+    async updateState(id, data){
+        return (await this.api.put(`/QLBA/${id}`, data)).data;
+    }
     async addTable(data){
         return (await this.api.post("/QLBA", data)).data;
     }

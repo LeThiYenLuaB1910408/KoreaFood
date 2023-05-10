@@ -1,6 +1,8 @@
 <script>
 import UserService from "@/services/user.service.js";
 import { useUserStore } from "@/stores/store";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 export default {
     data() {
@@ -14,12 +16,35 @@ export default {
     },
     methods: {
         async login() {
-            this.user = await UserService.login({ username: this.username, password: this.password });
-            this.acc.user = this.user;
-            console.log(this.user);
-            if (this.user.tai_khoan != null && this.user.tai_khoan.cap_quyen == 1) {
-                this.$router.push("/admin");
+            try {
+                this.user = await UserService.login({ username: this.username, password: this.password });
+                this.acc.user = this.user;
+                if (this.user.tai_khoan != null && this.user.tai_khoan.cap_quyen == 1) {
+                    toast("Đăng Nhập Trang Admin Thành Công", {
+                        autoClose: 500,
+                        type: 'success',
+                        theme: 'colored'
+                    });
+                    setTimeout(() => { this.$router.push("/admin"); }, 1000);
+                } else if (this.user.tai_khoan != null && this.user.tai_khoan.cap_quyen == 2) {
+                    toast("Đăng Nhập Trang Thu Ngân Thành Công", {
+                        autoClose: 500,
+                        type: 'success',
+                        theme: 'colored'
+                    });
+                    setTimeout(() => { this.$router.push("/accountant"); }, 1000);
+
+
+                }
+            } catch (error) {
+                toast("Đăng Nhập Không Thành Công", {
+                    autoClose: 1000,
+                    type: 'error',
+                    theme: 'colored'
+                });
+
             }
+
         }
     }
 }
@@ -29,17 +54,17 @@ export default {
     <div class="login">
         <div class="container title-login w-25 text-center mb-3">
             <img src="@/assets/logo.png" class="mb-3" alt="">
-            <h3>Đăng Nhập KoreaFood</h3>
+            <h3>Đăng Nhập YL Food</h3>
         </div>
         <form class="container main py-5" @submit.prevent="login">
             <div class="username mb-3">
                 <p class="m-0 pb-2">Tên Đăng Nhập</p>
-                <input type="text" placeholder="" class="border rounded-2 p-1" v-model="username">
+                <input type="text" placeholder="" class="border rounded-2 p-1" v-model="username" required>
             </div>
 
             <div class="password mb-3">
                 <p class="m-0 pb-2">Mật Khẩu</p>
-                <input type="password" placeholder="" class="border rounded-2 p-1" v-model="password">
+                <input type="password" placeholder="" class="border rounded-2 p-1" v-model="password" required>
             </div>
             <p v-if="this.user.message != null" class="text-danger">Tên Đăng Nhập hoặc Mật Khẩu không Hợp Lệ</p>
             <div class="sign-in mt-4">

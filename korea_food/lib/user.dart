@@ -71,15 +71,6 @@ class _UserPageState extends State<UserPage> {
                   SizedBox(
                     width: 10,
                   ),
-                  Expanded(
-                    child: Text(
-                      'User',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -131,7 +122,7 @@ class _UserPageState extends State<UserPage> {
                           const SizedBox(
                             width: 15,
                           ),
-                          Text('Informations',
+                          Text('Thông tin',
                               style: poppins.copyWith(
                                 color: Colors.grey,
                               )),
@@ -170,7 +161,7 @@ class _UserPageState extends State<UserPage> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  'Phone: ',
+                                  'Sđt: ',
                                   style: poppins.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -199,7 +190,7 @@ class _UserPageState extends State<UserPage> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  'CCCD: ',
+                                  'Email: ',
                                   style: poppins.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -207,7 +198,7 @@ class _UserPageState extends State<UserPage> {
                                 Expanded(
                                   child: Center(
                                     child: Text(
-                                      user.cccd,
+                                      user.email,
                                       style: poppins.copyWith(
                                         color: Color.fromARGB(255, 0, 0, 0)
                                             .withOpacity(0.5),
@@ -228,7 +219,7 @@ class _UserPageState extends State<UserPage> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  'Address: ',
+                                  'Địa chỉ: ',
                                   style: poppins.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -257,7 +248,7 @@ class _UserPageState extends State<UserPage> {
                                 ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  'Birthday: ',
+                                  'Ngày sinh: ',
                                   style: poppins.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -288,7 +279,7 @@ class _UserPageState extends State<UserPage> {
                           const SizedBox(
                             width: 15,
                           ),
-                          Text('Options',
+                          Text('Lựa chọn khác',
                               style: poppins.copyWith(
                                 color: Colors.grey,
                               )),
@@ -343,7 +334,7 @@ class _UserPageState extends State<UserPage> {
                                         padding:
                                             EdgeInsets.symmetric(vertical: 10),
                                         child: Text(
-                                          'Edit profile',
+                                          'Chỉnh sửa thông tin',
                                           style: poppins.copyWith(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -385,7 +376,7 @@ class _UserPageState extends State<UserPage> {
                                         padding:
                                             EdgeInsets.symmetric(vertical: 10),
                                         child: Text(
-                                          'Invoice History',
+                                          'Lịch sử hóa đơn',
                                           style: poppins.copyWith(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -427,7 +418,7 @@ class _UserPageState extends State<UserPage> {
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 15),
                                         child: Text(
-                                          'Change Password',
+                                          'Đổi mật khẩu',
                                           style: poppins.copyWith(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -499,7 +490,7 @@ class _UserPageState extends State<UserPage> {
                                   ),
                                   const SizedBox(width: 10),
                                   Text(
-                                    'Log out',
+                                    'Đăng Xuất',
                                     style: poppins.copyWith(
                                         fontSize: 16,
                                         color: Colors.red,

@@ -1,8 +1,11 @@
 <script>
-import SaleService from '@/services/sale.service'
+import SaleService from '@/services/sale.service';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 export default {
     data() {
-        return {
+          return {
             ds: [],
             idEdit: null,
             khuyen_mai: {}
@@ -13,23 +16,49 @@ export default {
             this.ds = await SaleService.getAll();
         },
         async delete(id) {
-            if (confirm('Xác nhận xóa khuyến mãi??')) {
-                const rs = await SaleService.delete(id);
-                alert(rs.message);
-            }
+            toast("Xóa Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
+            const rs = await SaleService.delete(id);
             this.getAll();
         },
         async add() {
-            const mkm = `KM${Number(this.ds[this.ds.length - 1]._id.slice(2, 3)) + 1}`;
-            await SaleService.add({ mkm: mkm, ...this.khuyen_mai });
-            this.initData();
-            this.getAll();
+            try {
+                let mkm;
+                if (this.ds.length > 0) {
+                    mkm = `KM${Number(this.ds[this.ds.length - 1]._id.slice(2, 3)) + 1}`;
+                } else {
+                    mkm = 'KM1';
+                }
+                toast("Thêm Thành Công", {
+                    autoClose: 1000,
+                    type: 'success',
+                    theme: 'colored'
+                });
+                await SaleService.add({ mkm: mkm, ...this.khuyen_mai });
+                this.initData();
+                this.getAll();
+            } catch (error) {
+                toast("Thêm Không Thành Công", {
+                    autoClose: 1000,
+                    type: 'error',
+                    theme: 'colored'
+                });
+            }
+
         },
         setEdit(data) {
             this.khuyen_mai = data;
             this.idEdit = data._id;
         },
         async update() {
+            toast("Cập Nhật Thành Công", {
+                autoClose: 1000,
+                type: 'success',
+                theme: 'colored'
+            });
             await SaleService.update(this.idEdit, this.khuyen_mai);
             this.initData();
             this.getAll();
@@ -58,6 +87,25 @@ export default {
                         class="fa-solid fa-rotate-right ms-2"></i></button>
             </div>
         </div>
+        <div class="modal fade hide " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-md modal-dialog-centered ">
+                <div class="modal-content rounded-0">
+                    <h5 class="modal-title text-center my-3" id="staticBackdropLabel">BẠN CÓ CHẮC CHẮN MUỐN XÓA?</h5>
+                    <div class="modal-body text-center">
+                        <i class="fa-regular fa-circle-xmark text-danger" style="font-size: 150px;"></i>
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <button @click="initData" type="button" class="btn btn-secondary rounded-0 px-3 py-2 me-1"
+                            data-bs-dismiss="modal">Hủy</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-danger rounded-0 px-3 py-2"
+                            @click="this.delete(this.idEdit)">Xóa</button>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="modal fade hide" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content">
@@ -81,6 +129,18 @@ export default {
                                 <label for="rangbuoc" class="form-label">Số Tiền Ràng Buộc</label>
                                 <input v-model="khuyen_mai.rang_buoc" type="text" class="form-control border rounded-0"
                                     id="rangbuoc" name="rangbuoc" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="nbd" class="form-label">Ngày Bắt Đầu Áp Dụng:</label>
+                                <input v-model="khuyen_mai.ngay_bat_dau" type="date" class="form-control border rounded-0"
+                                    id="nbd" name="nbd" />
+                            </div>
+                            <div class="col-md-6 mb-3 mt-3">
+                                <label for="nkt" class="form-label">Ngày Kết Thúc Khuyến Mãi:</label>
+                                <input v-model="khuyen_mai.ngay_ket_thuc" type="date" class="form-control border rounded-0"
+                                    id="nkt" name="nkt" />
                             </div>
                         </div>
                         <div class="row">
@@ -112,8 +172,10 @@ export default {
                     <tr>
                         <th scope="col">Mã</th>
                         <th scope="col">Tên Khuyến Mãi</th>
-                        <th scope="col">Phần Trăm Áp Dụng</th>
-                        <th scope="col">Số Tiền Ràng Buộc</th>
+                        <th scope="col">Phần Trăm</th>
+                        <th scope="col">Ràng Buộc</th>
+                        <th scope="col">Ngày Bắt Đầu</th>
+                        <th scope="col">Ngày Kết Thúc</th>
                         <th scope="col">Mô Tả</th>
                         <th scope="col">Khác</th>
                     </tr>
@@ -123,11 +185,14 @@ export default {
                         <th scope="row">{{ e._id }}</th>
                         <td>{{ e.ten_khuyen_mai }}</td>
                         <td>{{ e.gia_tri }}%</td>
-                        <td>{{ e.rang_buoc }}đ</td>
+                        <td>{{ new Intl.NumberFormat('vi-VN').format(e.rang_buoc) }}đ</td>
+                        <td>{{ e.ngay_bat_dau }}</td>
+                        <td>{{ e.ngay_ket_thuc }}</td>
                         <td>{{ e.chi_tiet_khuyen_mai }}</td>
                         <td><i class="fa-regular fa-pen-to-square me-2 fs-5" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal" @click="this.setEdit(e)"></i><i
-                                class="fa-regular fa-trash-can fs-5" @click="this.delete(e._id)"></i>
+                                class="fa-regular fa-trash-can fs-5" @click="this.setEdit(e)" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal1"></i>
                         </td>
                     </tr>
                 </tbody>

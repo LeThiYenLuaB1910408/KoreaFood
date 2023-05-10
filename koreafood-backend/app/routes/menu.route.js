@@ -12,6 +12,7 @@ router.route("/Menu/:loai")
 router.route("/QLTD/:id")
     .delete(menu.delete)
     .put(menu.update)
+    .patch(menu.updateState)
 
 
 module.exports = router;

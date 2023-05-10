@@ -23,7 +23,9 @@ class SaleService {
                     ten_khuyen_mai: payload.ten_khuyen_mai,
                     chi_tiet_khuyen_mai: payload.chi_tiet_khuyen_mai,
                     gia_tri: Number(payload.gia_tri),
-                    rang_buoc: Number(payload.rang_buoc)
+                    rang_buoc: Number(payload.rang_buoc),
+                    ngay_bat_dau: payload.ngay_bat_dau,
+                    ngay_ket_thuc: payload.ngay_ket_thuc
                 }
             }
         )
@@ -36,7 +38,9 @@ class SaleService {
             ten_khuyen_mai: payload.ten_khuyen_mai,
             chi_tiet_khuyen_mai: payload.chi_tiet_khuyen_mai,
             gia_tri: Number(payload.gia_tri),
-            rang_buoc: Number(payload.rang_buoc)
+            rang_buoc: Number(payload.rang_buoc),
+            ngay_bat_dau: payload.ngay_bat_dau,
+            ngay_ket_thuc: payload.ngay_ket_thuc
         })
         return result;
     }

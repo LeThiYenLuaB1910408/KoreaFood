@@ -36,33 +36,13 @@ class _LoginPageState extends State<LoginPage> {
 
     _isSubmitting.value = true;
     try {
-      Map result = await context.read<AuthManager>().login(
+      Map<String, dynamic> result = await context.read<AuthManager>().login(
             _authData['username']!,
             _authData['password']!,
           );
-      List ngay = result['ngay_sinh'].toString().split('-');
-      User user = User(
-        id: result['_id'],
-        ho_ten: result['ho_ten'],
-        cccd: result['cccd'],
-        ngay_sinh: DateTime(
-          int.parse(ngay[0]),
-          int.parse(ngay[1]),
-          int.parse(ngay[2]),
-        ),
-        gioi_tinh: result['gioi_tinh'],
-        dia_chi: result['dia_chi'],
-        so_dien_thoai: result['so_dien_thoai'],
-        hinh_anh_tai_khoan: result['hinh_anh_tai_khoan'],
-        tai_khoan: Account(
-            cap_quyen: result['tai_khoan']['cap_quyen'],
-            ten_dang_nhap: result['tai_khoan']['ten_dang_nhap'],
-            mat_khau: result['tai_khoan']['mat_khau'],
-            ngay_bat_dau_lam_viec: result['tai_khoan']
-                ['ngay_bat_dau_lam_viec']),
-      );
-      context.read<UserManager>().setUser(user);
       if (result['message'] == null) {
+        User user = User.fromJson(result);
+        context.read<UserManager>().setUser(user);
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomePage()),
           (Route<dynamic> route) => false,
@@ -108,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Login',
+                      Text('Đăng Nhập',
                           style: poppins.copyWith(
                             color: Colors.black,
                             decoration: TextDecoration.none,
@@ -117,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text('Please login to continue',
+                      Text('Vui lòng đang nhập để tiếp tục',
                           style: poppins.copyWith(
                               color: Color.fromARGB(255, 144, 142, 142),
                               decoration: TextDecoration.none,
@@ -148,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                                         labelStyle: poppins.copyWith(
                                             color: Color.fromARGB(
                                                 255, 82, 81, 81)),
-                                        labelText: 'Username',
+                                        labelText: 'Tên đăng nhập',
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black))),
@@ -175,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                                         labelStyle: poppins.copyWith(
                                             color: Color.fromARGB(
                                                 255, 82, 81, 81)),
-                                        labelText: 'Password',
+                                        labelText: 'Mật khẩu',
                                         focusedBorder: UnderlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.black))),
@@ -199,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                                             width: MediaQuery.of(context)
                                                     .size
                                                     .width *
-                                                .25,
+                                                .35,
                                             decoration: BoxDecoration(
                                                 color: Color.fromARGB(
                                                     255, 225, 207, 41),
@@ -211,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                  'LOGIN ',
+                                                  'ĐĂNG NHẬP ',
                                                   style: poppins.copyWith(
                                                       color: Colors.white,
                                                       fontWeight:

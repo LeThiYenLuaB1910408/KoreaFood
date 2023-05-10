@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:korea_food/config.dart';
 import 'package:korea_food/models/product_model.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class OrderService {
+  late Socket socket;
+
   Future<List<Product>> fetchProductOrder(String id) async {
     final List<Product> products = [];
     try {
@@ -42,6 +45,14 @@ class OrderService {
         }),
         headers: {"Content-Type": "application/json"},
       );
+      socket = io(socketUrl, <String, dynamic>{
+        'transports': ['websocket'],
+      });
+      socket.connect();
+      socket.on('connect', (_) => print('connect: ${socket.id}'));
+      socket.emit('sendOrder', so_ban);
+      socket.close();
+
       final responseJson = json.decode(response.body);
       if (responseJson['error'] != null) {}
       return responseJson;
@@ -65,6 +76,34 @@ class OrderService {
         }),
         headers: {"Content-Type": "application/json"},
       );
+      socket = io(socketUrl, <String, dynamic>{
+        'transports': ['websocket'],
+      });
+      socket.connect();
+      socket.on('connect', (_) => print('connect: ${socket.id}'));
+      socket.emit('updateOrder', so_ban);
+      socket.close();
+      final responseJson = json.decode(response.body);
+      if (responseJson['error'] != null) {}
+      return responseJson;
+    } catch (error) {
+      print(error);
+      rethrow;
+    }
+  }
+
+  Future deleteOrder(String id) async {
+    try {
+      final url = Uri.http(Url, "/api/order/deleteorder/$id");
+      print(url);
+      final response = await http.delete(url);
+      socket = io(socketUrl, <String, dynamic>{
+        'transports': ['websocket'],
+      });
+      socket.connect();
+      socket.on('connect', (_) => print('connect: ${socket.id}'));
+      socket.emit('deleteOrder', id);
+      socket.close();
       final responseJson = json.decode(response.body);
       if (responseJson['error'] != null) {}
       return responseJson;

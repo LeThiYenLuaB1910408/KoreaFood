@@ -11,9 +11,19 @@ class BillService {
         const result = await this.Bill.find({})
         return await result.toArray();
     }
+    async getBillDay(payload) {
+        let result = await this.Bill.find({})
+        result = await result.toArray();
+        result = result.filter(e=>e.thoi_gian.split(' ')[1] == payload.date.split(' ')[1]);
+        return result;
+    }
     async getBill(id) {
-        const result = await this.Bill.find({ma_nhan_vien_xuat_don:id})
+        const result = await this.Bill.find({ ma_nhan_vien_xuat_don: id })
         return await result.toArray();
+    }
+    async getTableBill(so_ban) {
+        const result = await this.Bill.findOne({ so_ban: Number(so_ban),  trang_thai_hoa_don:'Tạm tính'})
+        return result;
     }
     async payment(payload) {
         const allBill = await (await this.Bill.find({})).toArray();
@@ -31,12 +41,24 @@ class BillService {
             tong_tien: payload.tong_tien,
             so_ban: Number(payload.so_ban),
             phuong_thuc_thanh_toan: payload.phuong_thuc_thanh_toan,
-            ma_nhan_vien_xuat_don: payload.ma_nhan_vien_xuat_don
+            ma_nhan_vien_xuat_don: payload.ma_nhan_vien_xuat_don,
+            trang_thai_hoa_don: 'Tạm tính'
         })
 
-        await this.Order.findOneAndDelete({ so_ban: payload.so_ban })
+        
 
         return { "so_hoa_don": allBill.length + 1 };
+    }
+    async updateState(id, payload) {
+        const rs = await this.Bill.findOneAndUpdate({ _id: id },
+            {
+                $set: {
+                    trang_thai_hoa_don: payload.trang_thai_hoa_don
+                }
+            }
+        )
+        await this.Order.findOneAndDelete({ so_ban: `${payload.so_ban}` });
+        return rs;
     }
 }
 

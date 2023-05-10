@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:korea_food/invoice_history.dart';
 import 'package:korea_food/models/managers/bill_manager.dart';
 import 'package:korea_food/models/managers/discount_manager.dart';
 import 'package:korea_food/models/managers/order_manager.dart';
@@ -60,7 +59,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'KoreaFood',
+        title: 'YL Food',
         home: AnimatedSplashScreen(
           duration: 2000,
           splashIconSize: 200,
@@ -68,7 +67,7 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'KoreaFood',
+                'YL Food',
                 style: TextStyle(
                     fontFamily: 'Dancing Script',
                     color: Colors.white,
